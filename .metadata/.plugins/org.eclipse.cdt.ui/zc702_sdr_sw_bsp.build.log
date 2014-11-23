@@ -1,0 +1,23 @@
+15:46:48 **** Build of project zc702_sdr_sw_bsp ****
+make -k all 
+libgen -hw ../zc702_sdr_hw/system.xml\
+	       \
+	       -pe ps7_cortexa9_0 \
+	       -log libgen.log \
+	       system.mss
+libgen
+Xilinx EDK 2013.4 Build EDK_2013.4.20131205
+Copyright (c) 1995-2012 Xilinx, Inc.  All rights reserved.
+
+Command Line: libgen -hw ../zc702_sdr_hw/system.xml -pe ps7_cortexa9_0 -log
+libgen.log system.mss 
+
+ERROR:EDK - Failed to remove existing directory:
+   \\barney\myfiles\sdr\zc702_sdr\zc702_sdr_sw_bsp\ps7_cortexa9_0\libsrc\.
+ERROR:EDK - Failed to create directory
+   \\barney\myfiles\sdr\zc702_sdr\zc702_sdr_sw_bsp\ps7_cortexa9_0\libsrc\.
+make: *** [ps7_cortexa9_0/lib/libxil.a] Error 2
+make: Target `all' not remade because of errors.
+
+15:47:11 Build Finished (took 23s.876ms)
+
