@@ -1,1 +1,28 @@
 15:45:22.281 INFO  - Project 'zc702_sdr_hw' created. You can now create BSPs and application projects targeting this hardware platform. 
+09:31:21.044 INFO  - Project zc702_sdr_hw's source hardware specification located at H:\sdr\hdl\projects\fmcomms1\zc702\fmcomms1_zc702.sdk\SDK\SDK_Export\hw\system.xml is now different from the local copy.
+		 The local copy will be replaced with the source specification and your workspace will be updated. 
+09:33:49.069 INFO  - Copied contents of H:\sdr\hdl\projects\fmcomms1\zc702\fmcomms1_zc702.sdk\SDK\SDK_Export\hw\system.xml into \zc702_sdr_hw\system.xml. 
+09:33:53.023 INFO  - Copied contents of H:\sdr\hdl\projects\fmcomms1\zc702\fmcomms1_zc702.sdk\SDK\SDK_Export\hw\system_top.bit into \zc702_sdr_hw\system_top.bit. 
+09:33:56.351 INFO  - Copied contents of H:\sdr\hdl\projects\fmcomms1\zc702\fmcomms1_zc702.sdk\SDK\SDK_Export\hw\ps7_init.c into \zc702_sdr_hw\ps7_init.c. 
+09:33:56.382 INFO  - Copied contents of H:\sdr\hdl\projects\fmcomms1\zc702\fmcomms1_zc702.sdk\SDK\SDK_Export\hw\ps7_init.h into \zc702_sdr_hw\ps7_init.h. 
+09:33:59.617 INFO  - Copied contents of H:\sdr\hdl\projects\fmcomms1\zc702\fmcomms1_zc702.sdk\SDK\SDK_Export\hw\ps7_init.html into \zc702_sdr_hw\ps7_init.html. 
+09:34:02.070 INFO  - Copied contents of H:\sdr\hdl\projects\fmcomms1\zc702\fmcomms1_zc702.sdk\SDK\SDK_Export\hw\ps7_summary.html into \zc702_sdr_hw\ps7_summary.html. 
+09:34:02.163 INFO  - Copied contents of H:\sdr\hdl\projects\fmcomms1\zc702\fmcomms1_zc702.sdk\SDK\SDK_Export\hw\ps7_init.tcl into \zc702_sdr_hw\ps7_init.tcl. 
+09:34:02.789 INFO  - Synchronizing projects in the workspace with the hardware platform specification changes. 
+09:34:18.914 INFO  - Updating hardware inferred compiler options for zc702_sdr_sw. 
+09:34:18.945 INFO  - Clearing existing target manager status. 
+09:34:21.407 INFO  - Workspace synchronized with the new hardware specification file. Cleaning dependent projects... 
+09:40:06.110 INFO  - FPGA configured successfully with bitstream "H:/sdr/zc702_sdr/zc702_sdr_hw/system_top.bit" 
+09:40:59.286 INFO  - Processor reset is completed for ps7_cortexa9_0 
+09:40:59.286 INFO  - PS initialization will be done as it is not done before. 
+09:40:59.302 INFO  - Running PS initialization.... 
+09:40:59.786 INFO  - ps7_init is completed. 
+09:40:59.896 INFO  - ps7_post_config is completed. 
+09:41:00.005 INFO  - PS Initialization is complete. 
+09:43:08.824 INFO  - FPGA configured successfully with bitstream "H:/sdr/zc702_sdr/zc702_sdr_hw/system_top.bit" 
+09:43:29.887 INFO  - Processor reset is completed for ps7_cortexa9_0 
+09:43:29.997 INFO  - PS initialization will be done as it is not done before. 
+09:43:29.997 INFO  - Running PS initialization.... 
+09:43:30.497 INFO  - ps7_init is completed. 
+09:43:30.606 INFO  - ps7_post_config is completed. 
+09:43:30.715 INFO  - PS Initialization is complete. 
