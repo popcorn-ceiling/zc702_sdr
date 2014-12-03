@@ -41,7 +41,7 @@ all: zc702_sdr_sw.elf secondary-outputs
 zc702_sdr_sw.elf: $(OBJS) ../src/lscript.ld $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: ARM gcc linker'
-	arm-xilinx-eabi-gcc -Wl,-T -Wl,../src/lscript.ld -L../../zc702_sdr_sw_bsp/ps7_cortexa9_0/lib -o "zc702_sdr_sw.elf" $(OBJS) $(USER_OBJS) $(LIBS)
+	arm-xilinx-eabi-gcc -L"H:\sdr\zc702_sdr\zc702_sdr_sw_bsp\ps7_cortexa9_0\lib" -Wl,-T -Wl,../src/lscript.ld -L../../zc702_sdr_sw_bsp/ps7_cortexa9_0/lib -o "zc702_sdr_sw.elf" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 

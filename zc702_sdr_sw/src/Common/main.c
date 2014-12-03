@@ -40,11 +40,12 @@ int main() {
 	init_platform();
 
 	/* initliaze IP addresses to be used */
-	IP4_ADDR(&ipaddr,169,254,162,166);
-	IP4_ADDR(&netmask,255,255,0,0);
-	IP4_ADDR(&gw,169,254,162,1);
+	IP4_ADDR(&ipaddr,147,222,162,219);
+	IP4_ADDR(&netmask,255,255,254,0);
+	IP4_ADDR(&gw,147,222,163,254);
 
-	xil_printf("\n\rInitializing LWIP Interface..\n\r");
+	xil_printf("\n\rSDR 2014 IS UP AND RUNNING\n\r");
+	xil_printf("Initializing LWIP Interface...\n\r");
 	//print_app_header();
 	lwip_init();
 
