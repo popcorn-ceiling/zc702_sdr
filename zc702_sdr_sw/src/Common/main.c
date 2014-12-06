@@ -39,9 +39,9 @@ int main() {
 	netif = &server_netif;
 	init_platform();
 
-	/* initliaze IP addresses to be used */
-	IP4_ADDR(&ipaddr,147,222,162,219);
-	IP4_ADDR(&netmask,255,255,254,0);
+	/* initialize IP addresses to be used */
+	IP4_ADDR(&ipaddr,147,222,163,30);
+	IP4_ADDR(&netmask,255,255,255,0);
 	IP4_ADDR(&gw,147,222,163,254);
 
 	xil_printf("\n\rSDR 2014 IS UP AND RUNNING\n\r");
@@ -74,7 +74,6 @@ int main() {
 
     fmcSel = (defInit.fmcPort == FMC_LPC ? IICSEL_B0LPC_AXI : IICSEL_B1HPC_AXI);
 
-    //xil_printf("\n\rInitializing XCOMM Components...\n\r");
     ret = XCOMM_Init(&defInit);
 	if(ret < 0) {
 		xil_printf("XCOMM Init Failed!\n\r");
@@ -82,17 +81,15 @@ int main() {
 	} else {
 		xil_printf("XCOMM Initialized\n\r");
 	}
-	xil_printf("Initializing XCOMM interface..\n\r");
-	//xil_printf("\n\rSetting the Tx frequency to: %ll.6dll%\n\r", defInit.txFrequency);
+
     XCOMM_SetTxFrequency(defInit.txFrequency);
 
     //xil_printf("\n\rSetting up the FIFO... \n\r");
     //dds_setup(fmcSel, 5, 5);
     fifo_setup(fmcSel);
-    //xil_printf("FIFO setup complete.\n\r");
 
     xil_printf("\n\rEntering Main Loop.. \n\r");
-    xil_printf("\n\rMatlab Interface is ON.. \n\r");
+
     // System Main Loop
     int i=0;
     uint32_t time;
@@ -102,10 +99,22 @@ int main() {
     	// Ethernet Communication
     	xemacif_input(netif);
 
+    	/*xil_printf("packet info:\n\r");
+    	xil_printf("   radio on: %d\r\n", params->radio_1_on);
+    	xil_printf("   freq: %d\r\n", params->radio_1_freq);
+    	xil_printf("   sample rate: %d\r\n", params->radio_1_samp_rate);
+    	xil_printf("   arb length: %d\r\n", params->arb1Length);
+    	xil_printf("   i dat: %d\r\n", params->idata_1);
+    	xil_printf("   q dat: %d\r\n", params->qdata_1);
+    	xil_printf("   num packets: %d\r\n", params->numPackets);
+    	xil_printf("   packet len: %d\r\n", params->packetLength);
+    	xil_printf("   packet recvd: %d\r\n", params->packetsRecved);
+		*/
+
     	// Radio Output
     	if (params->radio_1_on) {
     		if (i==0)
-    			xil_printf("Start of ARB\n\r");
+    			//xil_printf("Start of ARB\n\r");
     		time = 1000*((double)1/(double)params->radio_1_samp_rate);
     		delay_ms(time);
     		arb_length = params->arb1Length;
