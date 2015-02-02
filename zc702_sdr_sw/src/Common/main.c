@@ -25,13 +25,18 @@ int start_application();
 extern void xil_printf(const char *ctrl1, ...);
 extern void delay_ms(uint32_t ms_count);
 
+extern uint16_t sine_lut_i[32];
+extern uint16_t sine_lut_q[32];
+
 int main() {
-	//TCPIP STUFF
+    int32_t ret;
+
+	/* TCPIP stuff */
 	struct netif *netif, server_netif;
 	struct ip_addr ipaddr, netmask, gw;;
 	netif = &server_netif;
 	struct radio_params *params = malloc(sizeof(struct radio_params));
-	params->radio_1_on=0;
+	params->radio_1_on=0; // TODO: move to function, redundant code
 	params->radio_1_freq=909000000;
 	params->radio_1_samp_rate=400000000;
 
@@ -44,14 +49,12 @@ int main() {
 	IP4_ADDR(&netmask,255,255,255,0);
 	IP4_ADDR(&gw,147,222,163,254);
 
-	xil_printf("\n\rSDR 2014 IS UP AND RUNNING\n\r");
-	xil_printf("Initializing LWIP Interface...\n\r");
-	//print_app_header();
+	xil_printf("\n\rSDR 2015 is alive\n\r");
 	lwip_init();
 
 	/* Add network interface to the netif_list, and set it as default */
 	if (!xemac_add(netif, &ipaddr, &netmask, &gw, mac_ethernet_address, PLATFORM_EMAC_BASEADDR)) {
-		xil_printf("Error adding N/W interface\n\r");
+		xil_printf("Error adding network interface\n\r");
 		return -1;
 	}
 	netif_set_default(netif);
@@ -59,66 +62,85 @@ int main() {
 	netif_set_up(netif);
 	start_application(params);
 
-    int32_t ret;
-    int32_t fmcSel;
-    XCOMM_DefaultInit defInit = {FMC_LPC,		//fmcPort
+	XCOMM_Version boardVersion;
+    XCOMM_DefaultInit defInit = {FMC_LPC,		//fmcPort0
     							 XILINX_ZC702,	//carrierBoard
                                  100000000,		//adcSamplingRate
 								 400000000,		//dacSamplingRate
-								 20000,			//rxGain1000
-								 909000000ull, //rxFrequency
-								 909000000ull};//txFrequency
+								 20000,			//rxGain2000
+								 909000000ull, 	//rxFrequency
+								 909000000ull};	//txFrequency
 
     Xil_ICacheEnable();
     Xil_DCacheEnable();
 
-    fmcSel = (defInit.fmcPort == FMC_LPC ? IICSEL_B0LPC_AXI : IICSEL_B1HPC_AXI);
+    int32_t fmcSel = (defInit.fmcPort == FMC_LPC ? IICSEL_B0LPC_PS7 : IICSEL_B1HPC_PS7);
 
-    ret = XCOMM_Init(&defInit);
-	if(ret < 0) {
-		xil_printf("XCOMM Init Failed!\n\r");
-		return 0;
-	} else {
-		xil_printf("XCOMM Initialized\n\r");
+    xil_printf("\n\rInitializing XCOMM I2C...");
+    ret = XCOMM_InitI2C(&defInit);
+    if(ret < 0)
+    {
+    	xil_printf(" Failed!\n\r");
+    	return 0;
+    }
+    else
+    {
+    	xil_printf(" OK!\n\r");
+    }
+
+    xil_printf("Getting XCOMM Revision...");
+	boardVersion = XCOMM_GetBoardVersion(XCOMM_ReadMode_FromHW);
+	if(boardVersion.error == -1)
+	{
+		xil_printf(" Failed!\n\r");
+	}
+	else
+	{
+		xil_printf(" OK!\n\rBoard Revision: %s\n\r", boardVersion.value);
 	}
 
-    XCOMM_SetTxFrequency(defInit.txFrequency);
+	xil_printf("Initializing XCOMM...");
+    ret = XCOMM_Init(&defInit);
+	if(ret < 0) {
+		xil_printf(" Failed!\n\r");
+		return 0;
+	} else {
+		xil_printf(" OK!\n\r");
+	}
 
-    //xil_printf("\n\rSetting up the FIFO... \n\r");
-    //dds_setup(fmcSel, 5, 5);
+	xil_printf("Initializing the Tx path...");
+	ret = XCOMM_InitTx(&defInit);
+	if(ret < 0)
+	{
+		xil_printf(" Failed!\n\r");
+		return 0;
+	}
+	else
+	{
+		xil_printf(" OK!\n\r");
+	}
+
+	xil_printf("Initializing DAC FIFO...");
     fifo_setup(fmcSel);
 
-    xil_printf("\n\rEntering Main Loop.. \n\r");
-
     // System Main Loop
-    int i=0;
+    int i = 0;
     uint32_t time;
-    int arb_length=0;
+    int arb_length = 0;
+
+    xil_printf("Ready to receive packets");
     while(1)
     {
-    	// Ethernet Communication
+    	/* Ethernet Communication */
     	xemacif_input(netif);
 
-    	/*xil_printf("packet info:\n\r");
-    	xil_printf("   radio on: %d\r\n", params->radio_1_on);
-    	xil_printf("   freq: %d\r\n", params->radio_1_freq);
-    	xil_printf("   sample rate: %d\r\n", params->radio_1_samp_rate);
-    	xil_printf("   arb length: %d\r\n", params->arb1Length);
-    	xil_printf("   i dat: %d\r\n", params->idata_1);
-    	xil_printf("   q dat: %d\r\n", params->qdata_1);
-    	xil_printf("   num packets: %d\r\n", params->numPackets);
-    	xil_printf("   packet len: %d\r\n", params->packetLength);
-    	xil_printf("   packet recvd: %d\r\n", params->packetsRecved);
-		*/
-
-    	// Radio Output
+    	/* Radio Output */
     	if (params->radio_1_on) {
-    		if (i==0)
-    			//xil_printf("Start of ARB\n\r");
     		time = 1000*((double)1/(double)params->radio_1_samp_rate);
     		delay_ms(time);
     		arb_length = params->arb1Length;
-    		dac_fifo_insert(fmcSel, params->idata_1[i], params->qdata_1[i]);
+    		//dac_fifo_insert(fmcSel, params->idata_1[i], params->qdata_1[i]);
+    		dac_fifo_insert(fmcSel, sine_lut_i[i], sine_lut_q[i]);
     	}
     	i = (i+1)%arb_length;
     }

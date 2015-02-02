@@ -162,26 +162,54 @@
 	#define DDRDAC_BASEADDR       DDR_BASEADDR + 0x00010000
 #endif
 
-#define IICSEL_B0LPC_PS7      0x20
-#define IICSEL_B1HPC_PS7      0x20
-#define IICSEL_B0LPC_AXI      0x04
-#define IICSEL_B1HPC_AXI      0x02
-#define IICSEL_B0PIC          0x59
-#define IICSEL_B1PIC          0x58
+#define IICSEL_B0LPC_PS7        0x20
+#define IICSEL_B1HPC_PS7        0x20
+#define IICSEL_B0LPC_PS7_ZC706  0x40
+#define IICSEL_B1HPC_PS7_ZC706  0x40
+#define IICSEL_B0LPC_AXI        0x04
+#define IICSEL_B1HPC_AXI        0x02
+#define IICSEL_B0PIC            0x59
+#define IICSEL_B1PIC            0x58
+
+#define AXI_DMAC_REG_IRQ_MASK			0x80
+#define AXI_DMAC_REG_IRQ_PENDING		0x84
+#define AXI_DMAC_REG_IRQ_SOURCE			0x88
+
+#define AXI_DMAC_REG_CTRL				0x400
+#define AXI_DMAC_REG_TRANSFER_ID		0x404
+#define AXI_DMAC_REG_START_TRANSFER		0x408
+#define AXI_DMAC_REG_FLAGS				0x40c
+#define AXI_DMAC_REG_DEST_ADDRESS		0x410
+#define AXI_DMAC_REG_SRC_ADDRESS		0x414
+#define AXI_DMAC_REG_X_LENGTH			0x418
+#define AXI_DMAC_REG_Y_LENGTH			0x41c
+#define AXI_DMAC_REG_DEST_STRIDE		0x420
+#define AXI_DMAC_REG_SRC_STRIDE			0x424
+#define AXI_DMAC_REG_TRANSFER_DONE		0x428
+#define AXI_DMAC_REG_ACTIVE_TRANSFER_ID 0x42c
+#define AXI_DMAC_REG_STATUS				0x430
+#define AXI_DMAC_REG_CURRENT_DEST_ADDR	0x434
+#define AXI_DMAC_REG_CURRENT_SRC_ADDR	0x438
+#define AXI_DMAC_REG_DBG0				0x43c
+#define AXI_DMAC_REG_DBG1				0x440
+
+#define AXI_DMAC_CTRL_ENABLE			(1 << 0)
+#define AXI_DMAC_CTRL_PAUSE				(1 << 1)
+
+#define AXI_DMAC_IRQ_SOT				(1 << 0)
+#define AXI_DMAC_IRQ_EOT				(1 << 1)
 
 /*****************************************************************************/
 /************************ Functions Declarations *****************************/
 /*****************************************************************************/
 /** Initializes the DDS core */
 void dds_setup(uint32_t sel, uint32_t f1, uint32_t f2);
+/** Initializes the DAC DMA **/
+void dac_dma_setup(uint32_t sel);
 /** Verifies the communication with the DAC */
 void dac_test(uint32_t sel);
-/** Set up the DAC for transmit in SED mode */
-void dac_init(uint32_t sel);
-/** Pass Data into SED Registers, s0 is I and s1 is Q data*/
-void dac_sed(uint32_t sel, uint32_t s0, uint32_t s1);
 /** Captures data from the ADC */
-void adc_capture(uint32_t sel, uint32_t qwcnt, uint32_t sa);
+void adc_capture(uint32_t sel, uint32_t size, uint32_t start_address);
 /** Verifies the communication with the ADC */
 void adc_test(uint32_t sel, uint32_t mode, uint32_t format);
 
