@@ -35,10 +35,11 @@ int main() {
 	struct netif *netif, server_netif;
 	struct ip_addr ipaddr, netmask, gw;;
 	netif = &server_netif;
-	struct radio_params *params = malloc(sizeof(struct radio_params));
-	params->radio_1_on=0; // TODO: move to function, redundant code
-	params->radio_1_freq=909000000;
-	params->radio_1_samp_rate=400000000;
+	struct radio_params *params0 = malloc(sizeof(struct radio_params));
+	//struct radio_params *params1 = malloc(sizeof(struct radio_params));
+	params0->radio_on=0; // TODO: move params defaults to function
+	params0->radio_freq=909000000;
+	params0->radio_samp_rate=400000000;
 
 	unsigned char mac_ethernet_address[] = { 0x00, 0x0a, 0x35, 0x02, 0x72, 0xa3 };
 	netif = &server_netif;
@@ -60,7 +61,7 @@ int main() {
 	netif_set_default(netif);
 	platform_enable_interrupts();
 	netif_set_up(netif);
-	start_application(params);
+	start_application(params0); // why need params?
 
 	XCOMM_Version boardVersion;
     XCOMM_DefaultInit defInit = {FMC_LPC,		//fmcPort0
@@ -74,7 +75,7 @@ int main() {
     Xil_ICacheEnable();
     Xil_DCacheEnable();
 
-    int32_t fmcSel = (defInit.fmcPort == FMC_LPC ? IICSEL_B0LPC_PS7 : IICSEL_B1HPC_PS7);
+    int32_t fmcSelDefault = (defInit.fmcPort == FMC_LPC ? IICSEL_B0LPC_PS7 : IICSEL_B1HPC_PS7);
 
     xil_printf("\n\rInitializing XCOMM I2C...");
     ret = XCOMM_InitI2C(&defInit);
@@ -120,27 +121,28 @@ int main() {
 		xil_printf(" OK!\n\r");
 	}
 
-	xil_printf("Initializing DAC FIFO...");
-    fifo_setup(fmcSel);
+	xil_printf("Initializing DAC FIFOs...");
+    fifo_setup(IICSEL_B0LPC_PS7); /* FMC0 */
+    fifo_setup(IICSEL_B1HPC_PS7); /* FMC1 */
 
     // System Main Loop
     int i = 0;
     uint32_t time;
     int arb_length = 0;
 
-    xil_printf("Ready to receive packets");
+    xil_printf("Ready to receive packets\n\r");
     while(1)
     {
     	/* Ethernet Communication */
     	xemacif_input(netif);
 
     	/* Radio Output */
-    	if (params->radio_1_on) {
-    		time = 1000*((double)1/(double)params->radio_1_samp_rate);
+    	if (params0->radio_on) {
+    		time = 1000*((double)1/(double)params0->radio_samp_rate);
     		delay_ms(time);
-    		arb_length = params->arb1Length;
-    		//dac_fifo_insert(fmcSel, params->idata_1[i], params->qdata_1[i]);
-    		dac_fifo_insert(fmcSel, sine_lut_i[i], sine_lut_q[i]);
+    		arb_length = params0->arbLength;
+    		//dac_fifo_insert(params0->fmcSel, params0->idata[i], params0->qdata[i]);
+    		dac_fifo_insert(fmcSelDefault, sine_lut_i[i], sine_lut_q[i]);
     	}
     	i = (i+1)%arb_length;
     }

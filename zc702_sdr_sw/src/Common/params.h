@@ -10,19 +10,12 @@
 
 struct radio_params {
 	/* Radio 1 Info */
-	int radio_1_on;
-	int radio_1_freq;
-	int radio_1_samp_rate;
-	int arb1Length;
-	int *idata_1;
-	int *qdata_1;
-
-	/* Radio 2 Info */
-	int radio_2_on;
-	int radio_2_freq;
-	int radio_2_samp_rate;
-	int *idata_2;
-	int *qdata_2;
+	int radio_on;
+	int radio_freq;
+	int radio_samp_rate;
+	int arbLength;
+	int *idata;
+	int *qdata;
 
 	/* Transfer Info */
 	int numPackets;

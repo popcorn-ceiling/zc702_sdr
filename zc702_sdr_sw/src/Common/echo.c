@@ -68,16 +68,16 @@ err_t recv_callback(void *arg, struct tcp_pcb *tpcb,
 
 		// TODO: free memory in packet type 0 regardless
 		if (pch[0] == '0') { //Handle setFrequency Function
-			if (params->idata_1!=NULL)
-				free(params->idata_1);
-			if (params->qdata_1!=NULL)
-				free(params->qdata_1);
+			if (params->idata!=NULL)
+				free(params->idata);
+			if (params->qdata!=NULL)
+				free(params->qdata);
 			pch = strtok(NULL," ");
 			int radioSelect = atoi(pch);
 			pch = strtok(NULL," ");
 			int frequency = atoi(pch);
 			xil_printf('packet freq: %d\n\r', frequency);
-			params->radio_1_freq = frequency;
+			params->radio_freq = frequency;
 			int returnFreq = XCOMM_SetTxFrequency((uint64_t)(frequency));
 			xil_printf("Frequency: %d\n\r",returnFreq);
 		} else if (pch[0] == '1') { // Handle setSamplingRate Function
@@ -85,15 +85,15 @@ err_t recv_callback(void *arg, struct tcp_pcb *tpcb,
 			int radioSelect = atoi(pch);
 			pch = strtok(NULL," ");
 			int samplingRate = atoi(pch);
-			params->radio_1_samp_rate = samplingRate;
+			params->radio_samp_rate = samplingRate;
 			int returnSamplingRate = XCOMM_SetDacSamplingRate((uint64_t)(samplingRate));
 			xil_printf("Sampling Rate: %d\n\r", returnSamplingRate);
 		} else if (pch[0] == '2') { // Setup arb memory
-			params->radio_1_on=0;
-			if (params->idata_1==NULL)
-				free(params->idata_1);
-			if (params->qdata_1==NULL)
-				free(params->qdata_1);
+			params->radio_on=0;
+			if (params->idata==NULL)
+				free(params->idata);
+			if (params->qdata==NULL)
+				free(params->qdata);
 
 			xil_printf("Setting up arb memory buffer\n\r");
 			pch = strtok(NULL," ");
@@ -102,16 +102,16 @@ err_t recv_callback(void *arg, struct tcp_pcb *tpcb,
 			params->numPackets = atoi(pch);
 			pch = strtok(NULL," ");
 			params->packetLength = atoi(pch);
-			params->arb1Length = params->packetLength*params->numPackets;
+			params->arbLength = params->packetLength*params->numPackets;
 
-			params->idata_1 = malloc(params->numPackets*params->packetLength*sizeof(int));
-			params->qdata_1 = malloc(params->numPackets*params->packetLength*sizeof(int));
-			if (params->idata_1==NULL) {
+			params->idata = malloc(params->numPackets*params->packetLength*sizeof(int));
+			params->qdata = malloc(params->numPackets*params->packetLength*sizeof(int));
+			if (params->idata==NULL) {
 				xil_printf("Error allocating memory for i data \n\r");
 				xil_printf("len, num = %d, %d\n\r", params->packetLength, params->numPackets);
 				return 1;
 			}
-			if (params->qdata_1==NULL) {
+			if (params->qdata==NULL) {
 				xil_printf("Error allocating memory for q data \n\r");
 				xil_printf("len, num = %d, %d\n\r", params->packetLength, params->numPackets);
 				return 1;
@@ -128,11 +128,11 @@ err_t recv_callback(void *arg, struct tcp_pcb *tpcb,
 				idata = atoi(pch);
 				pch = strtok(NULL," ");
 				qdata = atoi(pch);
-				params->idata_1[packetID*params->packetLength+i] = idata;
-				params->qdata_1[packetID*params->packetLength+i] = qdata;
+				params->idata[packetID*params->packetLength+i] = idata;
+				params->qdata[packetID*params->packetLength+i] = qdata;
 			} params->packetsRecved++;
 			if (params->packetsRecved==params->numPackets){
-				params->radio_1_on=1;
+				params->radio_on=1;
 				xil_printf("Arb received\n\r");
 			}
 		} else { // Error, command unrecognized
