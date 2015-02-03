@@ -45,6 +45,8 @@ void fifo_setup(uint32_t sel)
 {
 	uint32_t baddr = ((sel == IICSEL_B1HPC_AXI)||(sel == IICSEL_B1HPC_PS7)) ? CFAD9122_1_BASEADDR : CFAD9122_0_BASEADDR;
 
+	xil_printf("Initializing DAC FIFO for radio %d...", sel);
+
 	Xil_Out32((baddr + 0x4040), 0x1); // reset DAC core
 	delay_ms(10);
 	if (Xil_In32(baddr + 0x405c) == 0x0)

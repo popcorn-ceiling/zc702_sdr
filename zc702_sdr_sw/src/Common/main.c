@@ -121,7 +121,6 @@ int main() {
 		xil_printf(" OK!\n\r");
 	}
 
-	xil_printf("Initializing DAC FIFOs...");
     fifo_setup(IICSEL_B0LPC_PS7); /* FMC0 */
     fifo_setup(IICSEL_B1HPC_PS7); /* FMC1 */
 
