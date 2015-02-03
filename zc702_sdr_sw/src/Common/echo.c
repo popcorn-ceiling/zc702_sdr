@@ -68,12 +68,11 @@ err_t recv_callback(void *arg, struct tcp_pcb *tpcb,
 
 		// TODO: free memory in packet type 0 regardless
 		if (pch[0] == '0') { //Handle setFrequency Function
-			/*
 			if (params->idata!=NULL)
 				free(params->idata);
 			if (params->qdata!=NULL)
 				free(params->qdata);
-			*/
+
 			pch = strtok(NULL," ");
 			int radioSelect = atoi(pch);
 			pch = strtok(NULL," ");

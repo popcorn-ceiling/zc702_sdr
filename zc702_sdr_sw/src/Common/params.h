@@ -9,7 +9,7 @@
 #define PARAMS_H_
 
 struct radio_params {
-	/* Radio 1 Info */
+	/* Radio info */
 	int radio_on;
 	int radio_freq;
 	int radio_samp_rate;

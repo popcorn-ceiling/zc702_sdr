@@ -40,6 +40,8 @@ int main() {
 	params0->radio_on=0; // TODO: move params defaults to function
 	params0->radio_freq=909000000;
 	params0->radio_samp_rate=400000000;
+	params0->idata = NULL;
+	params0->qdata = NULL;
 
 	unsigned char mac_ethernet_address[] = { 0x00, 0x0a, 0x35, 0x02, 0x72, 0xa3 };
 	netif = &server_netif;
