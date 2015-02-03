@@ -68,10 +68,12 @@ err_t recv_callback(void *arg, struct tcp_pcb *tpcb,
 
 		// TODO: free memory in packet type 0 regardless
 		if (pch[0] == '0') { //Handle setFrequency Function
+			/*
 			if (params->idata!=NULL)
 				free(params->idata);
 			if (params->qdata!=NULL)
 				free(params->qdata);
+			*/
 			pch = strtok(NULL," ");
 			int radioSelect = atoi(pch);
 			pch = strtok(NULL," ");
@@ -107,7 +109,7 @@ err_t recv_callback(void *arg, struct tcp_pcb *tpcb,
 			params->idata = malloc(params->numPackets*params->packetLength*sizeof(int));
 			params->qdata = malloc(params->numPackets*params->packetLength*sizeof(int));
 			if (params->idata==NULL) {
-				xil_printf("Error allocating memory for i data \n\r");
+				xil_printf("Error allocating memory for idata \n\r");
 				xil_printf("len, num = %d, %d\n\r", params->packetLength, params->numPackets);
 				return 1;
 			}
@@ -133,7 +135,7 @@ err_t recv_callback(void *arg, struct tcp_pcb *tpcb,
 			} params->packetsRecved++;
 			if (params->packetsRecved==params->numPackets){
 				params->radio_on=1;
-				xil_printf("Arb received\n\r");
+				xil_printf("Arb received. Transmission on radio 1\n\r");
 			}
 		} else { // Error, command unrecognized
 			message_recvd = 0;
