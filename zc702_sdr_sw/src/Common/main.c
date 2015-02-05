@@ -143,7 +143,8 @@ int main() {
     		delay_ms(time);
     		arb_length = params0->arbLength;
     		//dac_fifo_insert(params0->fmcSel, params0->idata[i], params0->qdata[i]);
-    		dac_fifo_insert(fmcSelDefault, sine_lut_i[i], sine_lut_q[i]);
+    		dac_fifo_insert(fmcSelDefault, params0->idata[i], params0->qdata[i]);
+    		//dac_fifo_insert(fmcSelDefault, sine_lut_i[i], sine_lut_q[i]);
     	}
     	i = (i+1)%arb_length;
     }
