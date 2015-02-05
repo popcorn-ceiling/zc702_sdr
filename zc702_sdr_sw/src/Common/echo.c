@@ -50,6 +50,7 @@ err_t recv_callback(void *arg, struct tcp_pcb *tpcb,
 {
 	struct radio_params *params = arg;
 	int message_recvd = 1;
+	int arb_mem_size = -1;
 	/* do not read the packet if we are not in ESTABLISHED state */
 	if (!p) {
 		tcp_close(tpcb);
@@ -66,64 +67,59 @@ err_t recv_callback(void *arg, struct tcp_pcb *tpcb,
 		char * pch;
 		pch = strtok(msg," ");
 
-		// TODO: free memory in packet type 0 regardless
-		if (pch[0] == '0') { //Handle setFrequency Function
+		if (pch[0] == '0') { // Init packet
 			if (params->idata!=NULL)
 				free(params->idata);
 			if (params->qdata!=NULL)
 				free(params->qdata);
 
+			/* Radio select */
 			pch = strtok(NULL," ");
 			int radioSelect = atoi(pch);
+			params->radio_num = radioSelect;
+			xil_printf("    Arb for radio %d\n\r", radioSelect);
 			pch = strtok(NULL," ");
+
+			/* Tx frequency */
 			int frequency = atoi(pch);
-			xil_printf('packet freq: %d\n\r', frequency);
 			params->radio_freq = frequency;
 			int returnFreq = XCOMM_SetTxFrequency((uint64_t)(frequency));
-			xil_printf("Frequency: %d\n\r",returnFreq);
-		} else if (pch[0] == '1') { // Handle setSamplingRate Function
-			pch = strtok(NULL," ");
-			int radioSelect = atoi(pch);
+			xil_printf("        Frequency: %d\n\r",returnFreq);
+
+			/* Sample rate */
 			pch = strtok(NULL," ");
 			int samplingRate = atoi(pch);
 			params->radio_samp_rate = samplingRate;
-			int returnSamplingRate = XCOMM_SetDacSamplingRate((uint64_t)(samplingRate));
-			xil_printf("Sampling Rate: %d\n\r", returnSamplingRate);
-		} else if (pch[0] == '2') { // Setup arb memory
-			params->radio_on=0;
-			if (params->idata==NULL)
-				free(params->idata);
-			if (params->qdata==NULL)
-				free(params->qdata);
+			//int returnSamplingRate = XCOMM_SetDacSamplingRate((uint64_t)(samplingRate));
+			xil_printf("        Sampling Rate: %d\n\r", samplingRate);
 
-			xil_printf("Setting up arb memory buffer\n\r");
-			pch = strtok(NULL," ");
-			int radioSelect = atoi(pch);
+			/* Setup arb memory */
 			pch = strtok(NULL," ");
 			params->numPackets = atoi(pch);
 			pch = strtok(NULL," ");
 			params->packetLength = atoi(pch);
 			params->arbLength = params->packetLength*params->numPackets;
 
-			params->idata = malloc(params->numPackets*params->packetLength*sizeof(int));
-			params->qdata = malloc(params->numPackets*params->packetLength*sizeof(int));
+			arb_mem_size = params->numPackets * params->packetLength*sizeof(int);
+			params->idata = malloc(arb_mem_size);
+			params->qdata = malloc(arb_mem_size);
 			if (params->idata==NULL) {
 				xil_printf("Error allocating memory for idata \n\r");
-				xil_printf("len, num = %d, %d\n\r", params->packetLength, params->numPackets);
+				xil_printf("len, num, mem_size = %d, %d, %d\n\r", params->packetLength, params->numPackets, arb_mem_size);
 				return 1;
 			}
 			if (params->qdata==NULL) {
 				xil_printf("Error allocating memory for q data \n\r");
-				xil_printf("len, num = %d, %d\n\r", params->packetLength, params->numPackets);
+				xil_printf("len, num, mem_size = %d, %d, %d\n\r", params->packetLength, params->numPackets, arb_mem_size);
 				return 1;
 			}
 			params->packetsRecved = 0;
-			xil_printf("Arb incoming with %d packets of size %d\n\r",params->numPackets, params->packetLength);
-		} else if (pch[0] == '3') { // Load partial arb array
+			xil_printf("    Arb incoming with %d packets of size %d\n\r",params->numPackets, params->packetLength);
+		} else if (pch[0] == '1') { // Load partial arb array
 			int i,idata,qdata;
 			pch = strtok(NULL," ");
 			int packetID = atoi(pch);
-			xil_printf("Receiving Packet %d, accessing memory address: %d\n\r", packetID, packetID*params->packetLength);
+			xil_printf("        Receiving Packet %d, accessing memory address: %d\n\r", packetID, packetID*params->packetLength);
 			for (i=0; i<params->packetLength; i++) {
 				pch = strtok(NULL," ");
 				idata = atoi(pch);
@@ -134,7 +130,7 @@ err_t recv_callback(void *arg, struct tcp_pcb *tpcb,
 			} params->packetsRecved++;
 			if (params->packetsRecved==params->numPackets){
 				params->radio_on=1;
-				xil_printf("Arb received. Transmission on radio 1\n\r");
+				xil_printf("    Arb received. Transmitting on radio %d\n\r\n\r", params->radio_num);
 			}
 		} else { // Error, command unrecognized
 			message_recvd = 0;

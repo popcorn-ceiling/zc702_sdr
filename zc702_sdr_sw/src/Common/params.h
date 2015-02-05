@@ -10,6 +10,7 @@
 
 struct radio_params {
 	/* Radio info */
+	int radio_num;
 	int radio_on;
 	int radio_freq;
 	int radio_samp_rate;

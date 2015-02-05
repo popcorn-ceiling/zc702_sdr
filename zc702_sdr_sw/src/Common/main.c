@@ -91,18 +91,7 @@ int main() {
     	xil_printf(" OK!\n\r");
     }
 
-    xil_printf("Getting XCOMM Revision...");
-	boardVersion = XCOMM_GetBoardVersion(XCOMM_ReadMode_FromHW);
-	if(boardVersion.error == -1)
-	{
-		xil_printf(" Failed!\n\r");
-	}
-	else
-	{
-		xil_printf(" OK!\n\rBoard Revision: %s\n\r", boardVersion.value);
-	}
-
-	xil_printf("Initializing XCOMM...");
+	xil_printf("Initializing XCOMM radio...");
     ret = XCOMM_Init(&defInit);
 	if(ret < 0) {
 		xil_printf(" Failed!\n\r");
@@ -124,7 +113,18 @@ int main() {
 	}
 
     fifo_setup(IICSEL_B0LPC_PS7); /* FMC0 */
-    fifo_setup(IICSEL_B1HPC_PS7); /* FMC1 */
+    //fifo_setup(IICSEL_B1HPC_PS7); /* FMC1 */
+
+    xil_printf("Getting XCOMM Revision...");
+	boardVersion = XCOMM_GetBoardVersion(XCOMM_ReadMode_FromHW);
+	if(boardVersion.error == -1)
+	{
+		xil_printf(" Failed!\n\r");
+	}
+	else
+	{
+		xil_printf(" OK!\n\rBoard Revision: %s\n\r", boardVersion.value);
+	}
 
     // System Main Loop
     int i = 0;
