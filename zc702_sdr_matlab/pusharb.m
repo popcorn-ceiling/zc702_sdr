@@ -1,13 +1,14 @@
-function pusharb(radioSelection, idata, qdata)
+function pusharb(radioSelection, Idata, Qdata)
+
+idata = Idata;
+qdata = Qdata;
+
 idata = idata';
 qdata = qdata';
-% length(idata)
-% idata(:,length(idata)) = [];
-% length(idata)
-% length(qdata)
-% qdata(:,length(qdata)) = [];
-% length(qdata)
-% dan
+
+idata(:,length(idata)) = [];
+qdata(:,length(qdata)) = [];
+
 chunksize = 20;
 pause_t = .3;
 
