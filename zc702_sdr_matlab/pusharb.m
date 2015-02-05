@@ -7,7 +7,7 @@ qdata = qdata';
 % length(qdata)
 % qdata(:,length(qdata)) = [];
 % length(qdata)
-
+% dan
 chunksize = 20;
 pause_t = .3;
 
