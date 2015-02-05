@@ -25,11 +25,13 @@ t = tcpip('147.222.163.30', 8080);
 set(t, 'InputBufferSize', 10000);
 set(t, 'OutputBufferSize', 300000);
 fopen(t); 
+
+freq = 913000000;
+samprate = 4e8;
 % Transmit data to the server (or a request for data from the server).
-freqInit = sprintf('0 %d %d', radioSelection, 913000000)
-fprintf(t, freqInit);
-dan = sprintf('2 %d %d %d', radioSelection, numchunks, chunksize)
-fprintf(t, dan)
+Init = sprintf('0 %d %d %d %d %d', radioSelection, freq, samprate, numchunks, chunksize)
+fprintf(t, Init);
+
 pause(pause_t) 
 arbout = '';
 while (get(t, 'BytesAvailable') > 0) 
@@ -39,7 +41,7 @@ while (get(t, 'BytesAvailable') > 0)
 end
 
 for j = 1:numchunks
-    tempstr = sprintf('3 %d',j-1);
+    tempstr = sprintf('1 %d',j-1);
     for k=1:chunksize
         tempstr = strcat(tempstr, sprintf(' %d %d',idata(k+(j-1)*chunksize), qdata(k+(j-1)*chunksize)));
     end
