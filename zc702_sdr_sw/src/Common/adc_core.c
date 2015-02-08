@@ -47,7 +47,7 @@
 #include "adc_core.h"
 #include "xparameters.h"
 #include "xil_io.h"
-#include "test.h"
+#include "fifo.h"
 
 /*****************************************************************************/
 /************************ Variables Definitions ******************************/

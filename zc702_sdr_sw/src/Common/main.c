@@ -1,7 +1,7 @@
 /**************************************************************************//**
 *   @file   main.c
 *   @brief  XCOMM and TCPIP Main Program Definition.
-*   @author Alex Harris (aharris)
+*   @author Dan Collins and Garion Park
 *
 **************************************************************************/
 
@@ -28,22 +28,29 @@ extern void delay_ms(uint32_t ms_count);
 extern uint16_t sine_lut_i[32];
 extern uint16_t sine_lut_q[32];
 
+#define FREQ 909000000
+#define SAMP 400000000
+
+void radio_param_init(struct radio_params *param)
+{
+	*param = (struct radio_params){0, 0, FREQ, SAMP, 0, NULL, NULL, 0, 0, 0};
+	return;
+}
+
 int main() {
     int32_t ret;
 
 	/* TCPIP stuff */
 	struct netif *netif, server_netif;
 	struct ip_addr ipaddr, netmask, gw;;
-	netif = &server_netif;
 	struct radio_params *params0 = malloc(sizeof(struct radio_params));
-	//struct radio_params *params1 = malloc(sizeof(struct radio_params));
-	params0->radio_on=0; // TODO: move params defaults to function
-	params0->radio_freq=909000000;
-	params0->radio_samp_rate=400000000;
-	params0->idata = NULL;
-	params0->qdata = NULL;
+	struct radio_params *params1 = malloc(sizeof(struct radio_params));
 
 	unsigned char mac_ethernet_address[] = { 0x00, 0x0a, 0x35, 0x02, 0x72, 0xa3 };
+
+	radio_param_init(params0);
+	radio_param_init(params1);
+
 	netif = &server_netif;
 	init_platform();
 
@@ -77,7 +84,7 @@ int main() {
     Xil_ICacheEnable();
     Xil_DCacheEnable();
 
-    int32_t fmcSelDefault = (defInit.fmcPort == FMC_LPC ? IICSEL_B0LPC_PS7 : IICSEL_B1HPC_PS7);
+    params0->radio_num = (defInit.fmcPort == FMC_LPC ? IICSEL_B0LPC_PS7 : IICSEL_B1HPC_PS7);
 
     xil_printf("\n\rInitializing XCOMM I2C...");
     ret = XCOMM_InitI2C(&defInit);
@@ -112,6 +119,7 @@ int main() {
 		xil_printf(" OK!\n\r");
 	}
 
+	/* only init fifo's which we have received packets for? */
     fifo_setup(IICSEL_B0LPC_PS7); /* FMC0 */
     //fifo_setup(IICSEL_B1HPC_PS7); /* FMC1 */
 
@@ -126,10 +134,10 @@ int main() {
 		xil_printf(" OK!\n\rBoard Revision: %s\n\r", boardVersion.value);
 	}
 
-    // System Main Loop
+    /* System Main Loop */
     int i = 0;
-    uint32_t time;
     int arb_length = 0;
+    uint32_t time;
 
     xil_printf("Ready to receive packets\n\r");
     while(1)
@@ -142,9 +150,8 @@ int main() {
     		time = 1000*((double)1/(double)params0->radio_samp_rate);
     		delay_ms(time);
     		arb_length = params0->arbLength;
-    		//dac_fifo_insert(params0->fmcSel, params0->idata[i], params0->qdata[i]);
-    		dac_fifo_insert(fmcSelDefault, params0->idata[i], params0->qdata[i]);
-    		//dac_fifo_insert(fmcSelDefault, sine_lut_i[i], sine_lut_q[i]);
+    		dac_fifo_insert(params0->radio_num, params0->idata[i], params0->qdata[i]);
+    		//dac_fifo_insert(params0->radio_num, sine_lut_i[i], sine_lut_q[i]);
     	}
     	i = (i+1)%arb_length;
     }

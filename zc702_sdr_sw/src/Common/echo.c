@@ -45,8 +45,8 @@ void print_app_header()
 	xil_printf("TCP packets sent to port 8080 will be echoed back\n\r");
 }
 
-err_t recv_callback(void *arg, struct tcp_pcb *tpcb,
-                               struct pbuf *p, err_t err)
+/* This is where the magic happens */
+err_t recv_callback(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err)
 {
 	struct radio_params *params = arg;
 	int message_recvd = 1;
@@ -106,20 +106,23 @@ err_t recv_callback(void *arg, struct tcp_pcb *tpcb,
 			if (params->idata==NULL) {
 				xil_printf("Error allocating memory for idata \n\r");
 				xil_printf("len, num, mem_size = %d, %d, %d\n\r", params->packetLength, params->numPackets, arb_mem_size);
-				return 1;
 			}
 			if (params->qdata==NULL) {
-				xil_printf("Error allocating memory for q data \n\r");
+				xil_printf("Error allocating memory for qdata \n\r");
 				xil_printf("len, num, mem_size = %d, %d, %d\n\r", params->packetLength, params->numPackets, arb_mem_size);
-				return 1;
 			}
 			params->packetsRecved = 0;
 			xil_printf("    Arb incoming with %d packets of size %d\n\r",params->numPackets, params->packetLength);
+
 		} else if (pch[0] == '1') { // Load partial arb array
 			int i,idata,qdata;
 			pch = strtok(NULL," ");
 			int packetID = atoi(pch);
 			xil_printf("        Receiving Packet %d, accessing memory address: %d\n\r", packetID, packetID*params->packetLength);
+			if (params->idata==NULL || params->qdata==NULL) {
+				xil_printf("    Memory allocation error - skipping data packet\r\n");
+				return 1;
+			}
 			for (i=0; i<params->packetLength; i++) {
 				pch = strtok(NULL," ");
 				idata = atoi(pch);
