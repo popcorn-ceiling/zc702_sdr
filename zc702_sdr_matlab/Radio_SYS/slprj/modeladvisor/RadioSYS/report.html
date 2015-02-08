@@ -1,0 +1,626 @@
+<html>  <head>  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Model Advisor Report for 'RadioSYS'</title>  
+<style><!--
+H3 {font-size:14pt; font-weight:200;}  
+H4 {font-size:9pt; font-weight:normal;}  
+H5 {font-size: 12pt; font-style:italic; font-weight: bold; color: #333333; margin-bottom: 2px}  
+body {font-family: Arial, Helvetica, sans-serif}  
+.subsection {padding-left: 30px;}  
+
+--></style>  
+<script>
+<!--    
+    function init() {
+        var showFailed = document.getElementById("Failed Checkbox");
+        var showPassed = document.getElementById("Passed Checkbox");
+        var showWarning = document.getElementById("Warning Checkbox");
+        var showNotRun = document.getElementById("Not Run Checkbox");       
+
+        inputText = RegExp('\\?(.*)').exec(window.location.search);
+
+        if (inputText == null) {
+            return;
+        }
+        else {
+            showFailed.checked = false;
+            showPassed.checked = false;
+            showWarning.checked = false;
+            showNotRun.checked = false;
+        }
+
+        if (!inputText[1].localeCompare("showPassedChecks")) {
+            showPassed.checked = true;
+        }
+        if (!inputText[1].localeCompare("showWarningChecks")) {
+            showWarning.checked = true;
+        }
+        if (!inputText[1].localeCompare("showFailedChecks")) {
+            showFailed.checked = true;
+        }
+        if (!inputText[1].localeCompare("showNotRunChecks")) {
+            showNotRun.checked = true;
+        }
+        updateVisibleChecks();
+    }
+
+
+
+
+function expandGroup(caller) {
+var targetId, targetElement ;
+targetId = caller.id + "d" ;
+targetElement = document.getElementById(targetId) ;
+if (targetElement.style.display == "none") {
+   targetElement.style.display = "" ;
+   caller.src = "minus.png" ;
+ } else {
+   targetElement.style.display = "none" ;
+   caller.src = "plus.png" ;
+ }
+}
+
+function updateVisibleChecks()
+{
+
+var showFailed = document.getElementById("Failed Checkbox").checked;
+var showPassed = document.getElementById("Passed Checkbox").checked;
+var showWarning = document.getElementById("Warning Checkbox").checked;
+var showNotRun = document.getElementById("Not Run Checkbox").checked;
+var allshowFlag = showFailed && showPassed && showWarning && showNotRun;
+var passedChecks = document.getElementsByName("Passed Check");
+var failedChecks = document.getElementsByName("Failed Check");
+var warningChecks = document.getElementsByName("Warning Check");
+var notRunChecks = document.getElementsByName("Not Run Check");
+var i;
+
+if(failedChecks==null){failedChecks = 0;}
+if(passedChecks==null){passedChecks = 0;}
+if(warningChecks==null){warningChecks = 0;}
+if(notRunChecks==null){notRunChecks = 0;}
+
+for(i = 0; i < passedChecks.length; i++)
+{
+    passedChecks[i].style.display = "none";
+}     
+for(i = 0; i < failedChecks.length; i++)
+{
+    failedChecks[i].style.display = "none";
+}     
+for(i = 0; i < warningChecks.length; i++)
+{
+    warningChecks[i].style.display = "none";
+}     
+for(i = 0; i < notRunChecks.length; i++)
+{
+    notRunChecks[i].style.display = "none";
+}     
+
+if(showFailed || allshowFlag)
+{
+     for(i = 0; i < failedChecks.length; i++)
+    {
+		failedChecks[i].style.display = "";
+    }     
+}
+
+if(showPassed || allshowFlag)
+{
+     for(i = 0; i < passedChecks.length; i++)
+    {
+		passedChecks[i].style.display = "";
+    }     
+}
+
+if(showWarning || allshowFlag)
+{
+     for(i = 0; i < warningChecks.length; i++)
+    {
+		warningChecks[i].style.display = "";
+    }     
+}
+
+if(showNotRun || allshowFlag)
+{
+     for(i = 0; i < notRunChecks.length; i++)
+    {
+		notRunChecks[i].style.display = "";
+    }     
+}
+}
+
+function MATableShrink(o,tagNameStr,tagNameStr1)
+{
+var temp = document.getElementsByName(tagNameStr);
+var classUsed = document.getElementsByName('EmbedImages'); 
+var embeddedMode = !(classUsed.length == 0);
+if (temp[0].style.display == "") 
+{
+    temp[0].style.display = "none";
+    if (embeddedMode)
+    {
+        o.innerHTML = '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAABGdBTUEAALGOfPtRkwAAACBjSFJNAAB6JQAAgIMAAPn/AACA6QAAdTAAAOpgAAA6mAAAF2+SX8VGAAAAkUlEQVR42mL8//8/AyUAIICYGCgEAAFEsQEAAUSxAQABxIIu0NTURDBQ6urqGGFsgABiwaagpqYOp+aWliYUPkAAEfQCCwt+JQABRHEYAAQQCzE2w9h//vzDUAcQQDgNgCkGacamEQYAAohiLwAEEEED8NkOAgABxEJMVOEDAAHESGlmAgggisMAIIAoNgAgwAC+/BqtC+40NQAAAABJRU5ErkJggg==" class="plus"/>';        
+    }
+    else
+    {
+        o.innerHTML = '<img src="plus.png"/>';        
+    }
+    temp = document.getElementsByName(tagNameStr1);
+    if(temp[0] != undefined)
+    {
+        temp[0].style.display = "";
+    }
+} 
+else 
+{
+    temp[0].style.display = "";
+    o.innerHTML = '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAABGdBTUEAALGOfPtRkwAAACBjSFJNAAB6JQAAgIMAAPn/AACA6QAAdTAAAOpgAAA6mAAAF2+SX8VGAAAAhklEQVR42mL8//8/AyUAIICYGCgEAAFEsQEAAUSxAQABxIIu0NTURDBQ6urqGGFsgABiwaagpqYOp+aWliYUPkAAUewFgACi2ACAAGLBKcGCafafP/8wxAACCKcB2BRjAwABRLEXAAKIYgMAAoiFmKjCBwACiJHSzAQQQBR7ASCAKDYAIMAAUtQUow+YsTsAAAAASUVORK5CYII=" />';
+    temp = document.getElementsByName(tagNameStr1);
+    if(temp[0] != undefined)
+    {
+        temp[0].style.display = "none";
+    }
+}
+}
+
+function selectGroup(group) {
+var i; 
+// when groupid is o_1ck, find every thing start with o_1.
+var targetId = new RegExp(group.id.substr(0,group.id.length-2) + "\\w+");
+//var targetId = /out_2\w+/;
+var matchResult;
+var elementsArray = document.forms[0].elements;
+for (i=0; i< elementsArray.length; i++) {
+  if (elementsArray[i].type == "checkbox")  {
+   if (elementsArray[i].disabled == false) {     
+     //if ((elementsArray[i].id == targetId) ) {
+     matchResult = elementsArray[i].id.match(targetId);
+     if (matchResult != null) {
+       elementsArray[i].checked=group.checked;
+     }
+    }
+   }
+}  
+}
+
+// set focus to first text element of first form in the page
+function sf(){
+var i; //must declare local loop counter to avoid default global declaration
+var elementsArray = document.forms[0].elements;
+for(i=0; i < elementsArray.length; i++) {
+  if ((elementsArray[i].type == "text") && ((elementsArray[i].name != "Model"))) {
+    elementsArray[i].focus();
+    break;    
+  }
+ }
+}
+
+//set initial state for each selection element in the page
+function initiateState() {
+var i;
+var elementsArray = document.forms[0].elements;
+for (i=0; i< elementsArray.length; i++) {
+  if ((elementsArray[i].type == "select-one") ) {
+    elementsArray[i].click();
+  }
+}  
+}
+
+//translate special characters into escape sequence
+function subEncode(srcString) {
+  var srcList = new Array('z', '(', ')', '?', '&', '$', '|', '^', '{' , '}','\'','\"','\\', '[', ']', '/', '#', '<', '>', '.', '+', '=', '~', '@', '%', '`', ',', ' ', '*', ':', '!', ':');
+  var dstList = new Array('z0','z1','z2','z3','z4','z5','z6','z7','z8','z9','za','zb','zc','zd','ze','zf','zg','zh','zi','zj','zk','zl','zm','zn','zo','zp','zq','zs','zt','zu','zv','zw');
+  var dstString;
+  var i; //must declare local loop counter to avoid default global declaration
+  dstString = '';
+  for (i=0; i < srcString.length; i++) {
+   c = srcString.charAt(i);
+   newc = c;
+   for (j=0; j < srcList.length; j++) {
+     if (c==srcList[j]) {
+       newc = dstList[j];
+       }
+     }
+   dstString+= newc;
+   }
+  return dstString;
+}
+  
+// encode each "text" field of the form
+function htmlEncode(form) {
+var elementsArray = form.elements;
+var i; //must declare loop counter to avoid default global declaration
+for(i=0; i < elementsArray.length; i++) {
+  if ((elementsArray[i].type == "text") || (elementsArray[i].type == "select") || (elementsArray[i].type == "submit")) {
+    elementsArray[i].value=subEncode(elementsArray[i].value);
+  }
+}
+//  form.MatchCase.click();
+}
+
+// make sure only one parameter is checked on update parameter page
+function uncheckOthers(form, thischeckbox) {
+var elementsArray = form.elements;
+var i; //must declare loop counter to avoid default global declaration
+if (thischeckbox.checked) {
+  for(i=0; i < elementsArray.length; i++) {
+    if (elementsArray[i].type == "checkbox") 
+      if ((elementsArray[i].checked) && (elementsArray[i].name.substring(0,12)=="paramChecked") && (elementsArray[i].name != thischeckbox.name)) {
+        elementsArray[i].checked=false;
+      }
+    }
+  }
+}
+
+// select/unselect all found objects in the table
+function selectAll(form, select) {
+var elementsArray = form.elements;
+var i; //must declare loop counter to avoid default global declaration
+for(i=0; i < elementsArray.length; i++) {
+  if (elementsArray[i].type == "checkbox")  {
+   if (elementsArray[i].disabled == false) {
+    if (select) 
+      elementsArray[i].checked=true
+    else
+      elementsArray[i].checked=false
+   }
+  }
+}
+}
+
+function updateHyperlink() {
+    docObj = window.document;
+    loc = document.location;
+    var aHash = "";
+    var externalweb = "false";
+    if (loc.search || loc.hash) {
+          if (loc.search)
+              aHash = loc.search.substring(1);
+          else
+              aHash = loc.hash.substring(1);
+    }    
+    var args = new Array();
+    args = aHash.split('&');
+    for (var i = 0; i < args.length; ++i) {
+          var arg = args[i];
+          sep = arg.indexOf('=');
+          if (sep != -1) {
+              var cmd = arg.substring(0,sep);
+              var opt = arg.substring(sep+1);
+              switch (cmd.toLowerCase()) {
+                case "externalweb":
+                  externalweb = opt;
+                  break;
+              }
+          }
+    }        
+    if (externalweb === "true") {        
+        var objs = docObj.getElementsByTagName("a");
+        if (objs.length > 0 && objs[0].removeAttribute) {
+            for (var i = 0; i < objs.length; ++i) {           
+                if (objs[i].href.indexOf('matlab') > -1)           
+                   objs[i].removeAttribute("href");                
+                }
+        }
+    }
+    init();
+}
+
+// -->
+</script>
+</head>  
+<body onload="updateHyperlink()">  
+<table width="100%" border="0"><tr><td colspan="2" align="center"><b>Model Advisor Report - <font color="#800000">RadioSYS.slx</font></b>
+</td>
+</tr>
+<tr><td align="left"><b>Simulink version: <font color="#800000">8.1</font></b>
+</td>
+<td align="right"><b>Model version: <font color="#800000">1.41</font></b>
+</td>
+</tr>
+<tr><td align="left"><b>System: <font color="#800000">RadioSYS</font></b>
+</td>
+<td align="right"><b>Current run: <font color="#800000">07-Feb-2015 14:30:41</font></b>
+</td>
+</tr>
+</table>
+<br /><font color="#800000"><b>Run Summary</b></font><br /><table width="60%" border="0"><tr><td align="left"><b><input  type="checkbox" onClick="updateVisibleChecks()" id ="Passed Checkbox"  checked = "checked" /> Pass</b>
+</td>
+<td align="left"><b><input  type="checkbox" onClick="updateVisibleChecks()" id ="Failed Checkbox"  checked = "checked" />Fail</b>
+</td>
+<td align="left"><b><input  type="checkbox" onClick="updateVisibleChecks()" id ="Warning Checkbox"  checked = "checked" />Warning</b>
+</td>
+<td align="left"><b><input  type="checkbox" onClick="updateVisibleChecks()" id ="Not Run Checkbox"  checked = "checked" />Not Run</b>
+</td>
+<td align="left"><b>Total</b>
+</td>
+</tr>
+<tr><td align="left">&#160;&#160;<img src="task_passed.png" /> 26</td>
+<td align="left">&#160;&#160;<img src="task_failed.png" /> 12</td>
+<td align="left">&#160;&#160;<img src="task_warning.png" /> 10</td>
+<td align="left">&#160;&#160;<img src="icon_task.png" /> 0</td>
+<td align="left"> 48</td>
+</tr>
+</table>
+<font color="#FF0000">Error occurred during model compile.<br /><br />To ensure consistent initialization of conditionally executed subsystem output ports in the block diagram '<a href="matlab:open_system ('RadioSYS')">RadioSYS</a>', you must enable strict bus modeling by setting both of the options 'Mux blocks used to create bus signals' and 'Bus signal treated as vector' in the Connectivity Diagnostics pane of the Configuration Parameters dialog box to 'error'. Note that you may need to make modifications to the block diagram to conform to the modeling standards set by these diagnostics. For more information on how to make such modifications, see Simulink documentation under 'Diagnostics Pane: Connectivity' or run the Model Advisor check 'Check bus usage'</font><!-- Service Status Flag -->
+<!-- mdladv_ignore_start --><br /><br /><font color="#800000"><b><!-- mdladv_ignore_start --><span onclick="MATableShrink(this,'By Task','SubResults_By Task')"  onmouseover= "this.style.cursor = 'pointer' "><img src="minus.png"/></span><!-- mdladv_ignore_finish -->By Task</b></font><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><span name = "By Task"  id = "By Task"><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><br /><br /><font color="#800000"><b><!-- mdladv_ignore_start -->&#160; &#160; <span onclick="MATableShrink(this,'Code Generation Efficiency','SubResults_Code Generation Efficiency')"  onmouseover= "this.style.cursor = 'pointer' "><img src="minus.png"/></span><!-- mdladv_ignore_finish -->Code Generation Efficiency</b></font><span name = "SubResults_Code Generation Efficiency"  style="display:none"  id= "SubResults_Code Generation Efficiency" >&#160;&#160;<img src="task_passed.png" />4&#160;&#160;<img src="task_failed.png" />2&#160;&#160;<img src="task_warning.png" />2&#160;&#160;<img src="icon_task.png" />0</span><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><span name = "Code Generation Efficiency"  id = "Code Generation Efficiency"><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Warning Check" id = "Warning Check" style="margin-left: 20pt;"> <!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_12" /><!-- mdladv_ignore_start --><img border="0" src="task_warning.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Check optimization settings</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><p>You should turn on the following <a href="matlab: modeladvisorprivate openSimprmAdvancedPage RadioSYS Optimization"> optimization</a>(s):</p><table border="0" width="100%"><tr> <td width="20%" align="center"> </td> <td width="80%" align="left"><li>Inline parameters</li></td></tr><tr> <td width="20%" align="center"> </td> <td width="80%" align="left"><li>Remove code from floating-point to integer conversions that wraps out-of-range values</li></td></tr><tr> <td width="20%" align="center"> </td> <td width="80%" align="left"><li>Inline invariant signals</li></td></tr></table><br /><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Warning Check" id = "Warning Check" style="margin-left: 20pt;"> <!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_4" /><!-- mdladv_ignore_start --><img border="0" src="task_warning.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Identify blocks using one-based indexing</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><p align="left">Check the model for blocks configured for one-based indexing<br /><br /><b><font color="Green">Passed </font>
+</b>
+<br />All blocks in the model use zero-based indexing.<br />_________________________________________________________________________________________</p>
+<p align="left">Check for blocks requiring one-based indexing<br /><br /><b><font color="Orange">Warning </font>
+</b>
+<br />The following blocks require one-based indexing.<ul><li><a href="matlab: modeladvisorprivate hiliteSystem RadioSYSzfPMzfmod">RadioSYS/PM/mod</a>
+</li>
+</ul>
+<b>Recommended Action</b>
+<br />Evaluate the blocks to determine if one-based indexing is used.  Consider replacing the blocks with Simulink basic blocks</p>
+<!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Passed Check"  id = "Passed Check" style="margin-left: 20pt;"><!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_13" /><!-- mdladv_ignore_start --><img border="0" src="task_passed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Identify questionable software environment specifications</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><font color="#008000">Passed</font><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Passed Check"  id = "Passed Check" style="margin-left: 20pt;"><!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_9" /><!-- mdladv_ignore_start --><img border="0" src="task_passed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Identify lookup table blocks that generate expensive out-of-range checking code</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><p align="left">These settings can lead to inefficient code generation when inputs always fall within the range of valid breakpoint values for lookup table blocks, including Lookup Table blocks, Prelookup blocks and Interpolation blocks.<br /><br /><b><font color="Green">Passed </font>
+</b>
+<br />The lookup table blocks have been configured to generate range-checking free code.</p>
+<!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Passed Check"  id = "Passed Check" style="margin-left: 20pt;"><!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_14" /><!-- mdladv_ignore_start --><img border="0" src="task_passed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Identify questionable code instrumentation (data I/O)</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><font color="#008000">Passed</font><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Passed Check"  id = "Passed Check" style="margin-left: 20pt;"><!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_10" /><!-- mdladv_ignore_start --><img border="0" src="task_passed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Check output types of logic blocks</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><p align="left">Identify logic blocks that are outputting non-Boolean data types.<br /><br /><b><font color="Green">Passed </font>
+</b>
+<br />There are no logic blocks in the model or subsystem.</p>
+<!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Failed Check" id = "Failed Check"  style="margin-left: 20pt;"> <!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_74" /><!-- mdladv_ignore_start --><img border="0" src="task_failed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Identify blocks that generate expensive saturation and rounding code</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><font color="#FF0000">Error occurred during model compile.<br /><br />To ensure consistent initialization of conditionally executed subsystem output ports in the block diagram '<a href="matlab:open_system ('RadioSYS')">RadioSYS</a>', you must enable strict bus modeling by setting both of the options 'Mux blocks used to create bus signals' and 'Bus signal treated as vector' in the Connectivity Diagnostics pane of the Configuration Parameters dialog box to 'error'. Note that you may need to make modifications to the block diagram to conform to the modeling standards set by these diagnostics. For more information on how to make such modifications, see Simulink documentation under 'Diagnostics Pane: Connectivity' or run the Model Advisor check 'Check bus usage'</font><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Failed Check" id = "Failed Check"  style="margin-left: 20pt;"> <!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_86" /><!-- mdladv_ignore_start --><img border="0" src="task_failed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Identify questionable fixed-point operations</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><font color="#FF0000">Error occurred during model compile.<br /><br />To ensure consistent initialization of conditionally executed subsystem output ports in the block diagram '<a href="matlab:open_system ('RadioSYS')">RadioSYS</a>', you must enable strict bus modeling by setting both of the options 'Mux blocks used to create bus signals' and 'Bus signal treated as vector' in the Connectivity Diagnostics pane of the Configuration Parameters dialog box to 'error'. Note that you may need to make modifications to the block diagram to conform to the modeling standards set by these diagnostics. For more information on how to make such modifications, see Simulink documentation under 'Diagnostics Pane: Connectivity' or run the Model Advisor check 'Check bus usage'</font><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></span><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><br /><br /><font color="#800000"><b><!-- mdladv_ignore_start -->&#160; &#160; <span onclick="MATableShrink(this,'Managing Data Store Memory Blocks','SubResults_Managing Data Store Memory Blocks')"  onmouseover= "this.style.cursor = 'pointer' "><img src="minus.png"/></span><!-- mdladv_ignore_finish -->Managing Data Store Memory Blocks</b></font><span name = "SubResults_Managing Data Store Memory Blocks"  style="display:none"  id= "SubResults_Managing Data Store Memory Blocks" >&#160;&#160;<img src="task_passed.png" />0&#160;&#160;<img src="task_failed.png" />2&#160;&#160;<img src="task_warning.png" />1&#160;&#160;<img src="icon_task.png" />0</span><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><span name = "Managing Data Store Memory Blocks"  id = "Managing Data Store Memory Blocks"><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Warning Check" id = "Warning Check" style="margin-left: 20pt;"> <!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_45" /><!-- mdladv_ignore_start --><img border="0" src="task_warning.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Check Data Store Memory blocks for multitasking, strong typing, and shadowing issues</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><b>Multitask data store</b> checking is not set to 'error'.  When deployed in a real-time, multitasking environment, the integrity of the value of a data store that is written to and read from in different tasks is at risk.  Consider changing this setting to 'error' on the <a href="matlab:modeladvisorprivate('openSimprmAdvancedPage','RadioSYS','Data Validity')">Data Validity</a> page of the <b>Configuration Parameters</b> dialog box.<p /><b>Duplicate data store names</b> checking is not set to 'error'.  Duplicate usage of data store names can lead to unintended shadowing of data stores of higher model scope.  Consider changing this setting to 'error' on the <a href="matlab:modeladvisorprivate('openSimprmAdvancedPage','RadioSYS','Data Validity')">Data Validity</a> page of the <b>Configuration Parameters</b> dialog box.<p /><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Failed Check" id = "Failed Check"  style="margin-left: 20pt;"> <!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_84" /><!-- mdladv_ignore_start --><img border="0" src="task_failed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Check data store block sample times for modeling errors</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><font color="#FF0000">Error occurred during model compile.<br /><br />To ensure consistent initialization of conditionally executed subsystem output ports in the block diagram '<a href="matlab:open_system ('RadioSYS')">RadioSYS</a>', you must enable strict bus modeling by setting both of the options 'Mux blocks used to create bus signals' and 'Bus signal treated as vector' in the Connectivity Diagnostics pane of the Configuration Parameters dialog box to 'error'. Note that you may need to make modifications to the block diagram to conform to the modeling standards set by these diagnostics. For more information on how to make such modifications, see Simulink documentation under 'Diagnostics Pane: Connectivity' or run the Model Advisor check 'Check bus usage'</font><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Failed Check" id = "Failed Check"  style="margin-left: 20pt;"> <!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_85" /><!-- mdladv_ignore_start --><img border="0" src="task_failed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Check for potential ordering issues involving data store access</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><font color="#FF0000">Error occurred during model compile.<br /><br />To ensure consistent initialization of conditionally executed subsystem output ports in the block diagram '<a href="matlab:open_system ('RadioSYS')">RadioSYS</a>', you must enable strict bus modeling by setting both of the options 'Mux blocks used to create bus signals' and 'Bus signal treated as vector' in the Connectivity Diagnostics pane of the Configuration Parameters dialog box to 'error'. Note that you may need to make modifications to the block diagram to conform to the modeling standards set by these diagnostics. For more information on how to make such modifications, see Simulink documentation under 'Diagnostics Pane: Connectivity' or run the Model Advisor check 'Check bus usage'</font><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></span><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><br /><br /><font color="#800000"><b><!-- mdladv_ignore_start -->&#160; &#160; <span onclick="MATableShrink(this,'Managing Library Links And Variants','SubResults_Managing Library Links And Variants')"  onmouseover= "this.style.cursor = 'pointer' "><img src="minus.png"/></span><!-- mdladv_ignore_finish -->Managing Library Links And Variants</b></font><span name = "SubResults_Managing Library Links And Variants"  style="display:none"  id= "SubResults_Managing Library Links And Variants" >&#160;&#160;<img src="task_passed.png" />4&#160;&#160;<img src="task_failed.png" />0&#160;&#160;<img src="task_warning.png" />0&#160;&#160;<img src="icon_task.png" />0</span><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><span name = "Managing Library Links And Variants"  id = "Managing Library Links And Variants"><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Passed Check"  id = "Passed Check" style="margin-left: 20pt;"><!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_21" /><!-- mdladv_ignore_start --><img border="0" src="task_passed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Identify disabled library links</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><p align="left"><b><font color="Green">Passed </font>
+</b>
+</p>
+<!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Passed Check"  id = "Passed Check" style="margin-left: 20pt;"><!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_22" /><!-- mdladv_ignore_start --><img border="0" src="task_passed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Identify parameterized library links</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><font color="#008000">Passed</font><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Passed Check"  id = "Passed Check" style="margin-left: 20pt;"><!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_23" /><!-- mdladv_ignore_start --><img border="0" src="task_passed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Identify unresolved library links</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><font color="#008000">Passed</font><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Passed Check"  id = "Passed Check" style="margin-left: 20pt;"><!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_24" /><!-- mdladv_ignore_start --><img border="0" src="task_passed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Identify model reference variants and variant subsystems that override variant choice</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><p align="left">Identify model or subsystem for model reference variants and variant subsystems that specify variant choice using the override option instead of using the active variant control.<br /><br /><b><font color="Green">Passed </font>
+</b>
+<br />No model reference variants or variant subsystems found which override their choice.</p>
+<!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></span><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><br /><br /><font color="#800000"><b><!-- mdladv_ignore_start -->&#160; &#160; <span onclick="MATableShrink(this,'Model Referencing','SubResults_Model Referencing')"  onmouseover= "this.style.cursor = 'pointer' "><img src="minus.png"/></span><!-- mdladv_ignore_finish -->Model Referencing</b></font><span name = "SubResults_Model Referencing"  style="display:none"  id= "SubResults_Model Referencing" >&#160;&#160;<img src="task_passed.png" />4&#160;&#160;<img src="task_failed.png" />1&#160;&#160;<img src="task_warning.png" />0&#160;&#160;<img src="icon_task.png" />0</span><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><span name = "Model Referencing"  id = "Model Referencing"><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Passed Check"  id = "Passed Check" style="margin-left: 20pt;"><!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_60" /><!-- mdladv_ignore_start --><img border="0" src="task_passed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Check for model reference configuration mismatch</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><font color="#008000">Passed</font><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Passed Check"  id = "Passed Check" style="margin-left: 20pt;"><!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_16" /><!-- mdladv_ignore_start --><img border="0" src="task_passed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Check for parameter tunability information ignored for referenced models</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><p /><font color="#008000">Passed</font><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Passed Check"  id = "Passed Check" style="margin-left: 20pt;"><!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_17" /><!-- mdladv_ignore_start --><img border="0" src="task_passed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Check for implicit signal resolution</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><p /><font color="#008000">Passed</font><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Failed Check" id = "Failed Check"  style="margin-left: 20pt;"> <!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_77" /><!-- mdladv_ignore_start --><img border="0" src="task_failed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Check bus usage</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><font color="#FF0000">Error occurred during model compile.<br /><br />To ensure consistent initialization of conditionally executed subsystem output ports in the block diagram '<a href="matlab:open_system ('RadioSYS')">RadioSYS</a>', you must enable strict bus modeling by setting both of the options 'Mux blocks used to create bus signals' and 'Bus signal treated as vector' in the Connectivity Diagnostics pane of the Configuration Parameters dialog box to 'error'. Note that you may need to make modifications to the block diagram to conform to the modeling standards set by these diagnostics. For more information on how to make such modifications, see Simulink documentation under 'Diagnostics Pane: Connectivity' or run the Model Advisor check 'Check bus usage'</font><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Passed Check"  id = "Passed Check" style="margin-left: 20pt;"><!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_3" /><!-- mdladv_ignore_start --><img border="0" src="task_passed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Check root model Inport block specifications</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><font color="#008000">Passed</font><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></span><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><br /><br /><font color="#800000"><b><!-- mdladv_ignore_start -->&#160; &#160; <span onclick="MATableShrink(this,'Modeling Guidelines for MISRA-C:2004','SubResults_Modeling Guidelines for MISRA-C:2004')"  onmouseover= "this.style.cursor = 'pointer' "><img src="minus.png"/></span><!-- mdladv_ignore_finish -->Modeling Guidelines for MISRA-C:2004</b></font><span name = "SubResults_Modeling Guidelines for MISRA-C:2004"  style="display:none"  id= "SubResults_Modeling Guidelines for MISRA-C:2004" >&#160;&#160;<img src="task_passed.png" />0&#160;&#160;<img src="task_failed.png" />0&#160;&#160;<img src="task_warning.png" />2&#160;&#160;<img src="icon_task.png" />0</span><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><span name = "Modeling Guidelines for MISRA-C:2004"  id = "Modeling Guidelines for MISRA-C:2004"><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Warning Check" id = "Warning Check" style="margin-left: 20pt;"> <!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_41" /><!-- mdladv_ignore_start --><img border="0" src="task_warning.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Check for blocks not recommended for MISRA-C:2004 compliance</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><p align="left"><b>Check for constructs in the model that are not recommended for production code generation</b>
+<br />Identify blocks that are not recommended to be used for code generation.<br /><br /><b>See Also</b>
+<ul><li>High-Integrity Guidelines, hisl_0020 'Blocks not recommended for MISRA-C:2004 compliance'</li>
+</ul>
+<b><font color="Orange">Warning </font>
+</b>
+<br />The following constructs are not recommended for production code generation<ul><li><a href="matlab: modeladvisorprivate hiliteSystem RadioSYSzfIQ1zfms1">RadioSYS/IQ1/ms1</a>
+</li>
+<li><a href="matlab: modeladvisorprivate hiliteSystem RadioSYSzfIQ1zfms5">RadioSYS/IQ1/ms5</a>
+</li>
+<li><a href="matlab: modeladvisorprivate hiliteSystem RadioSYSzfIQ2zfms2">RadioSYS/IQ2/ms2</a>
+</li>
+<li><a href="matlab: modeladvisorprivate hiliteSystem RadioSYSzfIQ2zfms6">RadioSYS/IQ2/ms6</a>
+</li>
+<li><a href="matlab: modeladvisorprivate hiliteSystem RadioSYSzfIQ3zfms3">RadioSYS/IQ3/ms3</a>
+</li>
+<li><a href="matlab: modeladvisorprivate hiliteSystem RadioSYSzfIQ3zfms7">RadioSYS/IQ3/ms7</a>
+</li>
+<li><a href="matlab: modeladvisorprivate hiliteSystem RadioSYSzfIQ4zfms4">RadioSYS/IQ4/ms4</a>
+</li>
+<li><a href="matlab: modeladvisorprivate hiliteSystem RadioSYSzfIQ4zfms8">RadioSYS/IQ4/ms8</a>
+</li>
+<li><a href="matlab: modeladvisorprivate hiliteSystem RadioSYSzfPMzftime">RadioSYS/PM/time</a>
+</li>
+<li><a href="matlab: modeladvisorprivate hiliteSystem RadioSYSzfDSBAMzfSinezsWave">RadioSYS/DSBAM/Sine Wave</a>
+</li>
+<li><a href="matlab: modeladvisorprivate hiliteSystem RadioSYSzfDSBAMzfSinezsWave1">RadioSYS/DSBAM/Sine Wave1</a>
+</li>
+<li><a href="matlab: modeladvisorprivate hiliteSystem RadioSYSzfDSBAMzfSinezsWave">RadioSYS/DSBAM/Sine Wave</a>
+</li>
+<li><a href="matlab: modeladvisorprivate hiliteSystem RadioSYSzfDSBAMzfSinezsWave1">RadioSYS/DSBAM/Sine Wave1</a>
+</li>
+<li><a href="matlab: modeladvisorprivate hiliteSystem RadioSYSzfFMzfmtone">RadioSYS/FM/mtone</a>
+</li>
+<li><a href="matlab: modeladvisorprivate hiliteSystem RadioSYSzfFMzfmtone">RadioSYS/FM/mtone</a>
+</li>
+<li><a href="matlab: modeladvisorprivate hiliteSystem RadioSYSzfIQ2zfIC2">RadioSYS/IQ2/IC2</a>
+</li>
+<li><a href="matlab: modeladvisorprivate hiliteSystem RadioSYSzfIQ2zfQC2">RadioSYS/IQ2/QC2</a>
+</li>
+<li><a href="matlab: modeladvisorprivate hiliteSystem RadioSYSzfIQ2zfIC2">RadioSYS/IQ2/IC2</a>
+</li>
+<li><a href="matlab: modeladvisorprivate hiliteSystem RadioSYSzfIQ2zfQC2">RadioSYS/IQ2/QC2</a>
+</li>
+<li><a href="matlab: modeladvisorprivate hiliteSystem RadioSYSzfIQ3zfIC3">RadioSYS/IQ3/IC3</a>
+</li>
+<li><a href="matlab: modeladvisorprivate hiliteSystem RadioSYSzfIQ3zfQC3">RadioSYS/IQ3/QC3</a>
+</li>
+<li><a href="matlab: modeladvisorprivate hiliteSystem RadioSYSzfIQ3zfIC3">RadioSYS/IQ3/IC3</a>
+</li>
+<li><a href="matlab: modeladvisorprivate hiliteSystem RadioSYSzfIQ3zfQC3">RadioSYS/IQ3/QC3</a>
+</li>
+<li><a href="matlab: modeladvisorprivate hiliteSystem RadioSYSzfIQ4zfIC4">RadioSYS/IQ4/IC4</a>
+</li>
+<li><a href="matlab: modeladvisorprivate hiliteSystem RadioSYSzfIQ4zfQC4">RadioSYS/IQ4/QC4</a>
+</li>
+<li><a href="matlab: modeladvisorprivate hiliteSystem RadioSYSzfIQ4zfIC4">RadioSYS/IQ4/IC4</a>
+</li>
+<li><a href="matlab: modeladvisorprivate hiliteSystem RadioSYSzfIQ4zfQC4">RadioSYS/IQ4/QC4</a>
+</li>
+<li><a href="matlab: modeladvisorprivate hiliteSystem RadioSYSzfPMzfmt">RadioSYS/PM/mt</a>
+</li>
+<li><a href="matlab: modeladvisorprivate hiliteSystem RadioSYSzfPMzfmt">RadioSYS/PM/mt</a>
+</li>
+</ul>
+<b>Recommended Action</b>
+<br />Although Embedded Coder supports these blocks, they are not recommended for production code deployment. For details, see the Code Generation Support column of the table:<a href="matlab: showblockdatatypetable">  Simulink Block Support</a>. Review the support notes for code generation for these blocks and follow the given advice.</p>
+<!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Warning Check" id = "Warning Check" style="margin-left: 20pt;"> <!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_42" /><!-- mdladv_ignore_start --><img border="0" src="task_warning.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Check configuration parameters for MISRA-C:2004 compliance</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><p align="left">Identify configuration parameters that might impact MISRA-C:2004 compliant code generation.<br /><br /><b>See Also</b>
+<ul><li>High-Integrity Guidelines, hisl_0060 'Configuration parameters to improve MISRA-C:2004 compliance'</li>
+</ul>
+_________________________________________________________________________________________</p>
+<p align="left"><b>Check Model Verification block enabling</b>
+<br />Identify whether <b>Diagnostics > Data Validity > Model Verification block enabling</b> is set to <tt>Disable All</tt>.<br /><br /><b><font color="Orange">Warning </font>
+</b>
+<br /><b>Diagnostics > Data Validity > Model Verification block enabling</b> is not set to <tt>Disable All</tt>.<br /><br /><table border="1"><tr><td align="left"><b>Configuration Parameter</b>
+</td>
+<td align="left"><b>Actual Value</b>
+</td>
+<td align="left"><b>Recommended Value</b>
+</td>
+</tr>
+<tr><td align="left"><a href ="matlab:%20modeladvisorprivate%20openSimprmAdvancedPage%20RadioSYS%20'Diagnostics/Data%20Validity'%20">Model Verification block enabling</a></td>
+<td align="left">UseLocalSettings</td>
+<td align="left">DisableAll</td>
+</tr>
+</table>
+<br /><br /><b>Recommended Action</b>
+<br />Set <b>Diagnostics > Data Validity > Model Verification block enabling</b> to <tt>Disable All</tt>.<br />_________________________________________________________________________________________</p>
+<p align="left"><b>Check System target file</b>
+<br />Identify whether <b>Code Generation > System target file</b> is an ERT-based target.<br /><br /><b><font color="Orange">Warning </font>
+</b>
+<br /><b>Code Generation > System target file</b> is set to a GRT-based target.<br /><br /><table border="1"><tr><td align="left"><b>Configuration Parameter</b>
+</td>
+<td align="left"><b>Actual Value</b>
+</td>
+<td align="left"><b>Recommended Value</b>
+</td>
+</tr>
+<tr><td align="left"><a href ="matlab:%20modeladvisorprivate%20openSimprmAdvancedPage%20RadioSYS%20'Code%20Generation'%20">System Target File</a></td>
+<td align="left">grt.tlc</td>
+<td align="left">ert.tlc</td>
+</tr>
+</table>
+<br /><br /><b>Recommended Action</b>
+<br />Set <b>Code Generation > System target file</b> to an ERT-based target.<br />_________________________________________________________________________________________</p>
+<p align="left"><b>Check Code Generation > Interface parameters</b>
+<br />Identify whether <b>Code Generation > Interface</b> parameters are set to recommended values.<br /><br /><b><font color="Orange">Warning </font>
+</b>
+<br />The <b>Code Generation > Interface</b> parameters require an ERT-based target.<br />_________________________________________________________________________________________</p>
+<p align="left"><b>Check Parenthesis level</b>
+<br />Identify whether <b>Code Generation > Code Style > Parenthesis level</b> is <tt>Maximum (Specify precedence with parentheses)</tt>.<br /><br /><b><font color="Orange">Warning </font>
+</b>
+<br /><b>Code Generation > Code Style > Parenthesis level</b> requires an ERT-based target.<br />_________________________________________________________________________________________</p>
+<p align="left"><b>Check Maximum identifier length</b>
+<br />Identify whether <b>Code Generation > Symbols > Maximum identifier length</b> parameter is set to <tt>31</tt>.<br /><br /><b><font color="Orange">Warning </font>
+</b>
+<br /><b>Code Generation > Symbols > Maximum identifier length</b> requires an ERT-based target.</p>
+<!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></span><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><br /><br /><font color="#800000"><b><!-- mdladv_ignore_start -->&#160; &#160; <span onclick="MATableShrink(this,'Modeling Signals and Parameters using Buses','SubResults_Modeling Signals and Parameters using Buses')"  onmouseover= "this.style.cursor = 'pointer' "><img src="minus.png"/></span><!-- mdladv_ignore_finish -->Modeling Signals and Parameters using Buses</b></font><span name = "SubResults_Modeling Signals and Parameters using Buses"  style="display:none"  id= "SubResults_Modeling Signals and Parameters using Buses" >&#160;&#160;<img src="task_passed.png" />1&#160;&#160;<img src="task_failed.png" />2&#160;&#160;<img src="task_warning.png" />0&#160;&#160;<img src="icon_task.png" />0</span><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><span name = "Modeling Signals and Parameters using Buses"  id = "Modeling Signals and Parameters using Buses"><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Passed Check"  id = "Passed Check" style="margin-left: 20pt;"><!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_18" /><!-- mdladv_ignore_start --><img border="0" src="task_passed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Check for optimal bus virtuality</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><font color="#008000">Passed</font><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Failed Check" id = "Failed Check"  style="margin-left: 20pt;"> <!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_75" /><!-- mdladv_ignore_start --><img border="0" src="task_failed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Check for partial structure parameter usage with bus signals</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><font color="#FF0000">Error occurred during model compile.<br /><br />To ensure consistent initialization of conditionally executed subsystem output ports in the block diagram '<a href="matlab:open_system ('RadioSYS')">RadioSYS</a>', you must enable strict bus modeling by setting both of the options 'Mux blocks used to create bus signals' and 'Bus signal treated as vector' in the Connectivity Diagnostics pane of the Configuration Parameters dialog box to 'error'. Note that you may need to make modifications to the block diagram to conform to the modeling standards set by these diagnostics. For more information on how to make such modifications, see Simulink documentation under 'Diagnostics Pane: Connectivity' or run the Model Advisor check 'Check bus usage'</font><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Failed Check" id = "Failed Check"  style="margin-left: 20pt;"> <!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_77" /><!-- mdladv_ignore_start --><img border="0" src="task_failed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Check bus usage</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><font color="#FF0000">Error occurred during model compile.<br /><br />To ensure consistent initialization of conditionally executed subsystem output ports in the block diagram '<a href="matlab:open_system ('RadioSYS')">RadioSYS</a>', you must enable strict bus modeling by setting both of the options 'Mux blocks used to create bus signals' and 'Bus signal treated as vector' in the Connectivity Diagnostics pane of the Configuration Parameters dialog box to 'error'. Note that you may need to make modifications to the block diagram to conform to the modeling standards set by these diagnostics. For more information on how to make such modifications, see Simulink documentation under 'Diagnostics Pane: Connectivity' or run the Model Advisor check 'Check bus usage'</font><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></span><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><br /><br /><font color="#800000"><b><!-- mdladv_ignore_start -->&#160; &#160; <span onclick="MATableShrink(this,'Modeling Standards for DO-178C/DO-331','SubResults_Modeling Standards for DO-178C/DO-331')"  onmouseover= "this.style.cursor = 'pointer' "><img src="minus.png"/></span><!-- mdladv_ignore_finish -->Modeling Standards for DO-178C/DO-331</b></font><span name = "SubResults_Modeling Standards for DO-178C/DO-331"  style="display:none"  id= "SubResults_Modeling Standards for DO-178C/DO-331" >&#160;&#160;<img src="task_passed.png" />9&#160;&#160;<img src="task_failed.png" />5&#160;&#160;<img src="task_warning.png" />3&#160;&#160;<img src="icon_task.png" />0</span><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><span name = "Modeling Standards for DO-178C/DO-331"  id = "Modeling Standards for DO-178C/DO-331"><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Passed Check"  id = "Passed Check" style="margin-left: 20pt;"><!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_15" /><!-- mdladv_ignore_start --><img border="0" src="task_passed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Check for blocks that have constraints on tunable parameters</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><font color="#008000">Passed</font><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Passed Check"  id = "Passed Check" style="margin-left: 20pt;"><!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_20" /><!-- mdladv_ignore_start --><img border="0" src="task_passed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Check for Discrete-Time Integrator blocks with initial condition uncertainty</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><font color="#008000">Passed</font><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Passed Check"  id = "Passed Check" style="margin-left: 20pt;"><!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_60" /><!-- mdladv_ignore_start --><img border="0" src="task_passed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Check for model reference configuration mismatch</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><font color="#008000">Passed</font><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Passed Check"  id = "Passed Check" style="margin-left: 20pt;"><!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_16" /><!-- mdladv_ignore_start --><img border="0" src="task_passed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Check for parameter tunability information ignored for referenced models</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><p /><font color="#008000">Passed</font><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Failed Check" id = "Failed Check"  style="margin-left: 20pt;"> <!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_78" /><!-- mdladv_ignore_start --><img border="0" src="task_failed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Check for potentially delayed function-call block return values</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><font color="#FF0000">Error occurred during model compile.<br /><br />To ensure consistent initialization of conditionally executed subsystem output ports in the block diagram '<a href="matlab:open_system ('RadioSYS')">RadioSYS</a>', you must enable strict bus modeling by setting both of the options 'Mux blocks used to create bus signals' and 'Bus signal treated as vector' in the Connectivity Diagnostics pane of the Configuration Parameters dialog box to 'error'. Note that you may need to make modifications to the block diagram to conform to the modeling standards set by these diagnostics. For more information on how to make such modifications, see Simulink documentation under 'Diagnostics Pane: Connectivity' or run the Model Advisor check 'Check bus usage'</font><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Warning Check" id = "Warning Check" style="margin-left: 20pt;"> <!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_1" /><!-- mdladv_ignore_start --><img border="0" src="task_warning.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Check model for known block upgrade issues</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p>The Upgrade Advisor has checked blocks for issues in using them with this version of Simulink. See <a href="matlab:doc slupdate">doc('slupdate')</a> for more information.</p><p>S-function update status for the Level 2 API (see <a href="matlab:helpview([docroot,'/toolbox/simulink/sfg/simulink_sfg.map'],'overview')">Writing S-Functions</a>):</p><ul><li><font color="#008000">(mex)(Passed) sdspdsamp2</font></li></ul><p><b>Blocks recommended for update, grouped by update reason:</b></p><p /><p><b>Update reason</b> &#8212; The following configuration sets need to be updated (Configuration):</p><p /><p /><a href="matlab: modeladvisorprivate hiliteSystem SID:RadioSYS">RadioSYS</a><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Passed Check"  id = "Passed Check" style="margin-left: 20pt;"><!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_3" /><!-- mdladv_ignore_start --><img border="0" src="task_passed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Check root model Inport block specifications</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><font color="#008000">Passed</font><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Failed Check" id = "Failed Check"  style="margin-left: 20pt;"> <!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_76" /><!-- mdladv_ignore_start --><img border="0" src="task_failed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Check sample times and tasking mode</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><font color="#FF0000">Error occurred during model compile.<br /><br />To ensure consistent initialization of conditionally executed subsystem output ports in the block diagram '<a href="matlab:open_system ('RadioSYS')">RadioSYS</a>', you must enable strict bus modeling by setting both of the options 'Mux blocks used to create bus signals' and 'Bus signal treated as vector' in the Connectivity Diagnostics pane of the Configuration Parameters dialog box to 'error'. Note that you may need to make modifications to the block diagram to conform to the modeling standards set by these diagnostics. For more information on how to make such modifications, see Simulink documentation under 'Diagnostics Pane: Connectivity' or run the Model Advisor check 'Check bus usage'</font><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Warning Check" id = "Warning Check" style="margin-left: 20pt;"> <!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_5" /><!-- mdladv_ignore_start --><img border="0" src="task_warning.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Check solver for code generation</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p />Your model specifies a <a href="matlab: modeladvisorprivate openSimprmAdvancedPage RadioSYS Solver"> variable step solver</a> (VariableStepDiscrete).  If you want to generate code from this model, using the Embedded Coder, you must first change its <b>Solver</b> configuration parameter setting to specify a fixed-step, discrete solver.<p>Note that you do not have to change the solver setting to generate code from one of the model's subsystems. This is because the Embedded Coder changes the setting to a fixed-step solver for you when you select <b>C/C++ Code&gt;Build This Subsystem</b> or <b>C/C++ Code&gt;Generate S-Function</b> from the subsystem's context menu.</p><p />Consider setting <a href="matlab: modeladvisorprivate openSimprmAdvancedPage RadioSYS 'Sample Time'"> Multitask conditionally executed subsystem</a> to error.<p />Consider setting <a href="matlab: modeladvisorprivate openSimprmAdvancedPage RadioSYS 'Data Validity'"> Multitask data store</a> to error.<!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Warning Check" id = "Warning Check" style="margin-left: 20pt;"> <!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_11" /><!-- mdladv_ignore_start --><img border="0" src="task_warning.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Check the hardware implementation</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><p align="left"><b>Check 'Byte ordering' and 'Signed integer division rounds to' parameters</b>
+<br />Identify inconsistencies or underspecification of hardware attributes that can lead to incorrect and inefficient generated code.<br /><br /><b><font color="Orange">Warning </font>
+</b>
+<br />You have not specified <a href="matlab: modeladvisorprivate openSimprmAdvancedPage RadioSYS 'Hardware Implementation'"> Device type</a><br /><br /><b>Recommended Action</b>
+<br />Set <a href="matlab: modeladvisorprivate openSimprmAdvancedPage RadioSYS 'Hardware Implementation'"> Device type</a> to the target hardware.<br />_________________________________________________________________________________________</p>
+<p align="left"><b>Check whether 'Embedded hardware' and 'Emulation hardware' match</b>
+<br />Identify whether 'None' is selected for 'Emulation hardware'. If 'None' is cleared, identify whether target specifications match.<br /><br /><b><font color="Green">Passed </font>
+</b>
+<br />'None' is selected for 'Emulation hardware' or 'None' is cleared and the target specifications match.</p>
+<!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Passed Check"  id = "Passed Check" style="margin-left: 20pt;"><!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_21" /><!-- mdladv_ignore_start --><img border="0" src="task_passed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Identify disabled library links</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><p align="left"><b><font color="Green">Passed </font>
+</b>
+</p>
+<!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Passed Check"  id = "Passed Check" style="margin-left: 20pt;"><!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_22" /><!-- mdladv_ignore_start --><img border="0" src="task_passed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Identify parameterized library links</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><font color="#008000">Passed</font><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Passed Check"  id = "Passed Check" style="margin-left: 20pt;"><!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_23" /><!-- mdladv_ignore_start --><img border="0" src="task_passed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Identify unresolved library links</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><font color="#008000">Passed</font><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Failed Check" id = "Failed Check"  style="margin-left: 20pt;"> <!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_77" /><!-- mdladv_ignore_start --><img border="0" src="task_failed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Check bus usage</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><font color="#FF0000">Error occurred during model compile.<br /><br />To ensure consistent initialization of conditionally executed subsystem output ports in the block diagram '<a href="matlab:open_system ('RadioSYS')">RadioSYS</a>', you must enable strict bus modeling by setting both of the options 'Mux blocks used to create bus signals' and 'Bus signal treated as vector' in the Connectivity Diagnostics pane of the Configuration Parameters dialog box to 'error'. Note that you may need to make modifications to the block diagram to conform to the modeling standards set by these diagnostics. For more information on how to make such modifications, see Simulink documentation under 'Diagnostics Pane: Connectivity' or run the Model Advisor check 'Check bus usage'</font><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Failed Check" id = "Failed Check"  style="margin-left: 20pt;"> <!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_81" /><!-- mdladv_ignore_start --><img border="0" src="task_failed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Check Merge block usage</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><font color="#FF0000">Error occurred during model compile.<br /><br />To ensure consistent initialization of conditionally executed subsystem output ports in the block diagram '<a href="matlab:open_system ('RadioSYS')">RadioSYS</a>', you must enable strict bus modeling by setting both of the options 'Mux blocks used to create bus signals' and 'Bus signal treated as vector' in the Connectivity Diagnostics pane of the Configuration Parameters dialog box to 'error'. Note that you may need to make modifications to the block diagram to conform to the modeling standards set by these diagnostics. For more information on how to make such modifications, see Simulink documentation under 'Diagnostics Pane: Connectivity' or run the Model Advisor check 'Check bus usage'</font><!-- mdladv_ignore_start --><!-- inputparam_section_start --><H5><b>Input Parameters Selection</b>
+</H5><table border="1"><tr><td align="left"><b>Name</b>
+</td>
+<td align="left"><b>Value</b>
+</td>
+</tr>
+<tr><td align="left">Maximum analysis time (seconds)</td>
+<td align="left">inf</td>
+</tr>
+</table>
+<!-- inputparam_section_finish --><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Failed Check" id = "Failed Check"  style="margin-left: 20pt;"> <!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_79" /><!-- mdladv_ignore_start --><img border="0" src="task_failed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Identify questionable subsystem settings</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><font color="#FF0000">Error occurred during model compile.<br /><br />To ensure consistent initialization of conditionally executed subsystem output ports in the block diagram '<a href="matlab:open_system ('RadioSYS')">RadioSYS</a>', you must enable strict bus modeling by setting both of the options 'Mux blocks used to create bus signals' and 'Bus signal treated as vector' in the Connectivity Diagnostics pane of the Configuration Parameters dialog box to 'error'. Note that you may need to make modifications to the block diagram to conform to the modeling standards set by these diagnostics. For more information on how to make such modifications, see Simulink documentation under 'Diagnostics Pane: Connectivity' or run the Model Advisor check 'Check bus usage'</font><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Passed Check"  id = "Passed Check" style="margin-left: 20pt;"><!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_2" /><!-- mdladv_ignore_start --><img border="0" src="task_passed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Identify unconnected lines, input ports, and output ports</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><p align="left">Identify unconnected lines, input ports, and output ports in the model<br /><br /><b><font color="Green">Passed </font>
+</b>
+<br />There are no unconnected lines, input ports, and output ports in this model.</p>
+<!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></span><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><br /><br /><font color="#800000"><b><!-- mdladv_ignore_start -->&#160; &#160; <span onclick="MATableShrink(this,'Simulation Accuracy','SubResults_Simulation Accuracy')"  onmouseover= "this.style.cursor = 'pointer' "><img src="minus.png"/></span><!-- mdladv_ignore_finish -->Simulation Accuracy</b></font><span name = "SubResults_Simulation Accuracy"  style="display:none"  id= "SubResults_Simulation Accuracy" >&#160;&#160;<img src="task_passed.png" />0&#160;&#160;<img src="task_failed.png" />0&#160;&#160;<img src="task_warning.png" />1&#160;&#160;<img src="icon_task.png" />0</span><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><span name = "Simulation Accuracy"  id = "Simulation Accuracy"><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Warning Check" id = "Warning Check" style="margin-left: 20pt;"> <!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_68" /><!-- mdladv_ignore_start --><img border="0" src="task_warning.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Check for non-continuous signals driving derivative ports</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><p /> Could not compile model <b>RadioSYS.</b><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></span><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><br /><br /><font color="#800000"><b><!-- mdladv_ignore_start -->&#160; &#160; <span onclick="MATableShrink(this,'Simulation Runtime Accuracy Diagnostics','SubResults_Simulation Runtime Accuracy Diagnostics')"  onmouseover= "this.style.cursor = 'pointer' "><img src="minus.png"/></span><!-- mdladv_ignore_finish -->Simulation Runtime Accuracy Diagnostics</b></font><span name = "SubResults_Simulation Runtime Accuracy Diagnostics"  style="display:none"  id= "SubResults_Simulation Runtime Accuracy Diagnostics" >&#160;&#160;<img src="task_passed.png" />2&#160;&#160;<img src="task_failed.png" />0&#160;&#160;<img src="task_warning.png" />0&#160;&#160;<img src="icon_task.png" />0</span><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><span name = "Simulation Runtime Accuracy Diagnostics"  id = "Simulation Runtime Accuracy Diagnostics"><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Passed Check"  id = "Passed Check" style="margin-left: 20pt;"><!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_43" /><!-- mdladv_ignore_start --><img border="0" src="task_passed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Runtime diagnostics for S-functions</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /> <p /> <p /><font color="#008000">Passed</font><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Passed Check"  id = "Passed Check" style="margin-left: 20pt;"><!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_44" /><!-- mdladv_ignore_start --><img border="0" src="task_passed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Check if Read/Write diagnostics are enabled for Data Store blocks</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><p /><font color="#008000">Passed</font><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></span><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><br /><br /><font color="#800000"><b><!-- mdladv_ignore_start -->&#160; &#160; <span onclick="MATableShrink(this,'Simulink Model File Integrity','SubResults_Simulink Model File Integrity')"  onmouseover= "this.style.cursor = 'pointer' "><img src="minus.png"/></span><!-- mdladv_ignore_finish -->Simulink Model File Integrity</b></font><span name = "SubResults_Simulink Model File Integrity"  style="display:none"  id= "SubResults_Simulink Model File Integrity" >&#160;&#160;<img src="task_passed.png" />2&#160;&#160;<img src="task_failed.png" />0&#160;&#160;<img src="task_warning.png" />0&#160;&#160;<img src="icon_task.png" />0</span><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><span name = "Simulink Model File Integrity"  id = "Simulink Model File Integrity"><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Passed Check"  id = "Passed Check" style="margin-left: 20pt;"><!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_47" /><!-- mdladv_ignore_start --><img border="0" src="task_passed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Check file for foreign characters</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><p align="left">Check that the characters in the file can be represented in the current encoding.<br /><br /><b><font color="Green">Passed </font>
+</b>
+<br />All the characters in the file can be represented in the current encoding.</p>
+<!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Passed Check"  id = "Passed Check" style="margin-left: 20pt;"><!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_48" /><!-- mdladv_ignore_start --><img border="0" src="task_passed.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Check Model History properties</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><p align="left"><b>Check models for edited Model History property values</b>
+<br />Check that parameters in the Model Properties dialog History pane use the default tags  In the MDL file format you can configure some model properties to make use of source control tool keyword substitution.  If you save your model in SLX format, source control tools cannot perform keyword substitution. Any information in the model file from such keyword substitution is cached when you first save the MDL file as SLX, and is never updated again. The Model Properties History pane and any Model Info blocks in your model show stale information from then on.<br /><br /></p>
+<p align="left"><b><font color="Green">Passed </font>
+</b>
+<br />This model uses the default value for property ModifiedByFormat.</p>
+<p align="left"><b><font color="Green">Passed </font>
+</b>
+<br />This model uses the default value for property ModifiedDateFormat.</p>
+<p align="left"><b><font color="Green">Passed </font>
+</b>
+<br />This model uses the default value for property ModelVersionFormat.</p>
+<!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></span><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><br /><br /><font color="#800000"><b><!-- mdladv_ignore_start -->&#160; &#160; <span onclick="MATableShrink(this,'Upgrading to the Current Simulink Version','SubResults_Upgrading to the Current Simulink Version')"  onmouseover= "this.style.cursor = 'pointer' "><img src="minus.png"/></span><!-- mdladv_ignore_finish -->Upgrading to the Current Simulink Version</b></font><span name = "SubResults_Upgrading to the Current Simulink Version"  style="display:none"  id= "SubResults_Upgrading to the Current Simulink Version" >&#160;&#160;<img src="task_passed.png" />0&#160;&#160;<img src="task_failed.png" />0&#160;&#160;<img src="task_warning.png" />1&#160;&#160;<img src="icon_task.png" />0</span><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><span name = "Upgrading to the Current Simulink Version"  id = "Upgrading to the Current Simulink Version"><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --><div name = "Warning Check" id = "Warning Check" style="margin-left: 20pt;"> <!-- mdladv_ignore_finish -->
+<p><hr /></p>  <A NAME="CheckRecord_58" /><!-- mdladv_ignore_start --><img border="0" src="task_warning.png" />&#160;<!-- mdladv_ignore_finish --><font size="+1"><!-- mdladv_ignore_start --></font><!-- mdladv_ignore_finish --><b>Open the Upgrade Advisor</b><!-- mdladv_ignore_start --><font><!-- mdladv_ignore_finish --></font>
+<!-- mdladv_ignore_start --><div align="left" class="subsection"><!-- mdladv_ignore_finish --><p /><p /><p align="left"><b><font color="Orange">Warning </font>
+</b>
+<br />To check for upgrade issues, open the Upgrade Advisor.<br /><br /><b>Recommended Action</b>
+<br />Click the link below to close the Model Advisor and open the Upgrade Advisor for RadioSYS.<br /><a href="matlab:UpgradeAdvisor.open('RadioSYS')">Open the Upgrade Advisor</a>
+</p>
+<!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></div><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></span><!-- mdladv_ignore_finish --><!-- mdladv_ignore_start --></span><!-- mdladv_ignore_finish -->
+
+</body>  
+</html>  
