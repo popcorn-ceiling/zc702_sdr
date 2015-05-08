@@ -22,6 +22,7 @@
 #include "lwip/err.h"
 #include "lwip/tcp.h"
 #include "params.h"
+#include "fifo.h"
 
 #include "xcomm.h"
 
@@ -90,9 +91,7 @@ err_t recv_callback(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err)
 			/* Sample rate */
 			pch = strtok(NULL," ");
 			int samplingRate = atoi(pch);
-			params->radio_samp_rate = samplingRate;
-			//int returnSamplingRate = XCOMM_SetDacSamplingRate((uint64_t)(samplingRate));
-			xil_printf("        Sampling Rate: %d\n\r", samplingRate);
+			//params->radio_samp_rate = samplingRate;
 
 			/* Setup arb memory */
 			pch = strtok(NULL," ");
@@ -101,7 +100,7 @@ err_t recv_callback(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err)
 			params->packetLength = atoi(pch);
 			params->arbLength = params->packetLength*params->numPackets;
 
-			arb_mem_size = params->numPackets * params->packetLength*sizeof(int);
+			arb_mem_size = params->arbLength*sizeof(int);
 			params->idata = malloc(arb_mem_size);
 			params->qdata = malloc(arb_mem_size);
 			if (params->idata==NULL) {
@@ -133,7 +132,7 @@ err_t recv_callback(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err)
 				params->qdata[packetID*params->packetLength+i] = qdata;
 			} params->packetsRecved++;
 			if (params->packetsRecved==params->numPackets){
-				params->radio_on=1; // HACK
+				dac_dma_setup(params);
 				xil_printf("    Arb received. Transmitting on radio %d\n\r\n\r", params->radio_num);
 			}
 		} else { // Error, command unrecognized

@@ -7,10 +7,12 @@
 
 #include <stdint.h>
 #include <xparameters.h>
+#include <xil_cache.h>
 #include <xil_io.h>
 #include "ad9122.h"
 #include "timer.h"
 #include "fifo.h"
+#include "dac_core.h"
 
 #define PCORE_VERSION_MAJOR(version)	(version >> 16)
 
@@ -20,6 +22,11 @@
 extern int32_t ad9122_write(uint8_t registerAddress, uint8_t registerValue);
 extern int32_t ad9122_read(uint8_t registerAddress);
 extern void xil_printf(const char *ctrl1, ...);
+
+/*****************************************************************************/
+/************************ Constants Definitions ******************************/
+/*****************************************************************************/
+static uint32_t dac_base_addr;
 
 /**************************************************************************//**
 * @brief Delays the program execution with the specified number of ms.
@@ -36,6 +43,30 @@ void delay_ms(uint32_t ms_count)
 	TIMER0_WAIT(XPAR_AXI_TIMER_0_BASEADDR, ms_count*1000000);
 #endif
 }
+/***************************************************************************//**
+* @brief dac_read
+*******************************************************************************/
+void dac_read(uint32_t regAddr, uint32_t *data)
+{
+	*data = Xil_In32(dac_base_addr + 0x4000 + regAddr);
+}
+
+/***************************************************************************//**
+* @brief dac_write
+*******************************************************************************/
+void dac_write(uint32_t regAddr, uint32_t data)
+{
+	Xil_Out32(dac_base_addr + 0x4000 + regAddr, data);
+}
+
+/***************************************************************************//**
+* @brief do_div
+*******************************************************************************/
+#define do_div(n,base) ({								\
+		uint64_t __res;									\
+		__res = ((uint64_t) (n)) % (uint64_t) (base);	\
+		n = ((uint64_t) (n)) / (uint64_t) (base);		\
+		__res;})
 
 /*****************************************************************************
 * @brief Initializes the FIFO core.
@@ -123,7 +154,7 @@ void dac_fifo_insert(uint32_t sel, uint32_t s0, uint32_t s1)
 			Xil_Out32((baddr + 0x4048), 0x1); // format, sel
 			Xil_Out32((baddr + 0x4044), 0x1); // enable
 		}
-		delay_ms(10);
+		//delay_ms(10);
 		//ad9122_write(0x67, 0xa3);
 		//ad9122_write(0x07, 0x1c);
 		//delay_ms(100);
@@ -169,4 +200,68 @@ void dac_fifo_reset(uint32_t sel)
 	    xil_printf("end of reset loop\n\r");
 	} while (depth != 4);
 	xil_printf("finished fifo reset\n\r");
+}
+/**************************************************************************//**
+* @brief Initializes the DAC DMA.
+*
+* @return None.
+******************************************************************************/
+void dac_dma_setup(struct radio_params *params)
+{
+	uint32_t baddr;
+	uint32_t index;
+	uint32_t tx_count;
+	uint32_t data_i;
+	uint32_t data_q;
+	uint32_t dac_clk;
+	uint32_t val;
+	uint32_t sine_freq;
+	uint32_t hdl_version;
+	uint32_t sel;
+
+	sel = params->radio_num;
+	dac_base_addr = ((sel == IICSEL_B1HPC_AXI)||(sel == IICSEL_B1HPC_PS7)) ?
+					CFAD9122_1_BASEADDR : CFAD9122_0_BASEADDR;
+
+	tx_count = params->arbLength; // def - sizeof(sine_lut_i) / sizeof(uint16_t);
+	xil_printf("        tx_count: %d\n\r", tx_count);
+	for(index = 0; index < tx_count; index ++)
+	{
+		data_i = params->idata[index] << 16;
+		data_q = params->qdata[index] << 0;
+		Xil_Out32(DDRDAC_BASEADDR + index * 4, data_i | data_q);
+	}
+
+	Xil_DCacheFlush();
+	baddr = ((sel == IICSEL_B1HPC_AXI)||(sel == IICSEL_B1HPC_PS7)) ? DMA9122_1_BASEADDR : DMA9122_0_BASEADDR;
+
+	Xil_Out32(baddr + AXI_DMAC_REG_CTRL, AXI_DMAC_CTRL_ENABLE);
+	Xil_Out32(baddr + AXI_DMAC_REG_SRC_ADDRESS, DDRDAC_BASEADDR);
+	Xil_Out32(baddr + AXI_DMAC_REG_SRC_STRIDE, 0);
+	Xil_Out32(baddr + AXI_DMAC_REG_X_LENGTH, (tx_count * 4) - 1);
+	Xil_Out32(baddr + AXI_DMAC_REG_Y_LENGTH, 0x0);
+	Xil_Out32(baddr + AXI_DMAC_REG_START_TRANSFER, 0x1);
+
+	dac_read(ADI_REG_CLK_FREQ, &val);
+	dac_clk = val;
+	dac_read(ADI_REG_CLK_RATIO, &val);
+	dac_clk *= val * 100000000 / 65536;
+	sine_freq = dac_clk / (tx_count * 2);
+	xil_printf("        dac_clk: %d Hz\n\r", dac_clk);
+	xil_printf("        dac_dma: Sine is %d Hz\n\r", sine_freq);
+
+	dac_read(ADI_REG_VERSION, &hdl_version);
+	if (PCORE_VERSION_MAJOR(hdl_version) > 7)
+	{
+		dac_write(ADI_REG_CHAN_CNTRL_7(0), 2);
+		dac_write(ADI_REG_CHAN_CNTRL_7(1), 2);
+		dac_write(ADI_REG_CNTRL_1, 0x0);
+		dac_write(ADI_REG_CNTRL_1, 0x1);
+	}
+	else
+	{
+		dac_write(ADI_REG_CNTRL_2, ADI_DATA_FORMAT | ADI_DATA_SEL(DATA_SEL_DMA));
+		dac_write(ADI_REG_CNTRL_1, 0x0);
+		dac_write(ADI_REG_CNTRL_1, 0x1);
+	}
 }

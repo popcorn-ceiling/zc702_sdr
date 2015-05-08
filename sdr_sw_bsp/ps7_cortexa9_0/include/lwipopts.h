@@ -57,6 +57,8 @@
 #define CHECKSUM_CHECK_TCP  0
 #define CHECKSUM_CHECK_UDP  0
 #define CHECKSUM_CHECK_IP 	0
+/* edits */
+#define LWIP_CHECKSUM_ON_COPY 1
 
 #define NO_SYS_NO_TIMERS 1
 #define MEMP_SEPARATE_POOLS 1

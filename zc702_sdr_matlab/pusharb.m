@@ -9,7 +9,7 @@ qdata = qdata';
 idata(:,length(idata)) = [];
 qdata(:,length(qdata)) = [];
 
-chunksize = 20;
+chunksize = 100;
 pause_t = .3;
 
 %     !!!!!!!!!!!!!!!!!!!!!!
@@ -26,8 +26,8 @@ set(t, 'InputBufferSize', 10000);
 set(t, 'OutputBufferSize', 300000);
 fopen(t); 
 
-freq = 913000000;
-samprate = 4e8;
+freq = 914000000;
+samprate = 2e4;
 % Transmit data to the server (or a request for data from the server).
 Init = sprintf('0 %d %d %d %d %d', radioSelection, freq, samprate, numchunks, chunksize)
 fprintf(t, Init);

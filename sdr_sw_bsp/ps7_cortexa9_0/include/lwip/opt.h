@@ -936,7 +936,7 @@
  * an upper limit on the MSS advertised by the remote host.
  */
 #ifndef TCP_MSS
-#define TCP_MSS                         536
+#define TCP_MSS                         1460 /* edits - def 536 */
 #endif
 
 /**
@@ -956,7 +956,7 @@
  * TCP_SND_BUF: TCP sender buffer space (bytes).
  */
 #ifndef TCP_SND_BUF
-#define TCP_SND_BUF                     256
+#define TCP_SND_BUF                     TCP_WND /* edits - def 256 */
 #endif
 
 /**

@@ -4,6 +4,8 @@
  *  Created on: Mar 22, 2013
  *      Author: aharris
  */
+
+#include "params.h"
 #ifndef FIFO_H_
 #define FIFO_H_
 
@@ -173,5 +175,6 @@ void fifo_setup(uint32_t sel);
 void dac_fifo_insert(uint32_t sel, uint32_t s0, uint32_t s1);
 /** Resets the FIFO */
 void dac_fifo_reset(uint32_t sel);
+void dac_dma_setup(struct radio_params *params);
 
 #endif /* FIFO_H_ */
